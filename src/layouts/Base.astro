@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import aiNotice from '../scripts/ai-notice.js?raw';
 import { repository } from '../lib';
 interface Props { title?: string; description?: string; }
 const { title='Trading Tools', description='Practical open-source TradingView indicators and browser userscripts. Show exchange data on CFD charts, customise TradingView in your browser, and use Trade Nation shortcuts and statistics.' } = Astro.props;
@@ -14,10 +15,14 @@ const path=Astro.url.pathname;
 <link rel="canonical" href={new URL(path, Astro.site)}/><link rel="icon" href="data:,"/>
 <meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:type" content="website"/><meta property="og:url" content={new URL(path,Astro.site)}/>
 <script is:inline>try{if(localStorage.getItem('trading-tools-theme')==='light')document.documentElement.dataset.theme='light'}catch{}</script>
+<script is:inline set:html={aiNotice}/>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><div class="nav-wrap"><a href="/" class="brand" aria-label="Trading tools home"><span>Trading tools<small>for TradingView and CFD brokers</small></span></a><nav aria-label="Main navigation"><a href="/indicators/" aria-current={path.startsWith('/indicators')?'page':undefined}>Indicators</a><a href="/userscripts/" aria-current={path.startsWith('/userscripts')?'page':undefined}>Userscripts</a></nav><div class="nav-actions"><button class="theme-toggle" type="button" aria-label="Switch colour theme" title="Switch colour theme"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg></button><a class="github-nav" href={repository} target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a></div></div></header>
+<aside class="ai-notice section-shell" aria-label="About the use of AI">
+ <div class="ai-notice-content"><p><strong>Built with AI, shaped by 40 years of software engineering.</strong> I used AI to generate this site and these tools, and made every effort to avoid AI slop. The aim is practical tools that actually help you.</p><button type="button" data-dismiss-ai-notice aria-label="Dismiss AI notice"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+</aside>
 <main id="main"><slot/></main>
 <footer class="site-footer"><div class="footer-top"><a href="/" class="brand"><span>Trading tools<small>for TradingView and CFD brokers</small></span></a><p>TradingView indicators and desktop browser userscripts.</p><a href={repository}>View the source <span aria-hidden="true">↗</span></a></div><div class="footer-bottom"><span>© {new Date().getFullYear()} Vladan Colovic · SVKO</span><div><a href="/about/">About & licences</a><a href="/capture-guide/">Visual capture guide</a><a href={`${repository}/issues`}>Report an issue</a></div></div><p class="footer-note">Independent tools. Not affiliated with TradingView, IG or Trade Nation. Illustrations use example data.</p></footer>
 <script>

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
+import { runInNewContext } from 'node:vm';
 const root=resolve('dist');
 const files=readdirSync(root,{recursive:true}).filter(f=>f.endsWith('.html'));
 const catalogue=readdirSync('src/content/tools').filter(f=>f.endsWith('.md')).map(file=>({id:file.slice(0,-3),...JSON.parse(readFileSync(join('src/content/tools',file),'utf8').split('---')[1])}));
@@ -41,4 +42,39 @@ assert.match(stats,/There is no IG importer/);
 assert.match(readFileSync(join(root,'userscripts/index.html'),'utf8'),/native TradingView Desktop app/);
 assert.match(readFileSync(join(root,'tools/info/index.html'),'utf8'),/has not reviewed or tested their mobile output/);
 assert(existsSync(join(root,'sitemap.xml')));
+const noticeScript=readFileSync('src/scripts/ai-notice.js','utf8');
+assert(readFileSync(join(root,'index.html'),'utf8').split('</head>')[0].includes(noticeScript),'Notice visibility is decided inline before the body renders');
+const noticeKey='trading-tools-ai-notice';
+const storage=()=>{const values=new Map();return {getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,value)}};
+const blocked={getItem(){throw Error('Storage unavailable')},setItem(){throw Error('Storage unavailable')}};
+const visit=(localStorage,sessionStorage)=>{
+ const document={documentElement:{dataset:{}},addEventListener(type,listener){assert.equal(type,'click');this.click=listener}};
+ runInNewContext(noticeScript,{document,localStorage,sessionStorage});
+ return {visible:()=>document.documentElement.dataset.aiNotice==='show',close:()=>document.click({target:{closest:()=>true}})};
+};
+const persistent=storage();
+for(let sessionNumber=1;sessionNumber<=4;sessionNumber++){
+ const session=storage();
+ for(let page=0;page<3;page++){
+  assert.equal(visit(persistent,session).visible(),sessionNumber<=3,'Visible during the first three sessions only');
+  assert.equal(persistent.getItem(`${noticeKey}-visits`),String(sessionNumber),'Navigation and reload must not count extra visits');
+ }
+}
+const dismissed=storage(),currentSession=storage(),notice=visit(dismissed,currentSession);
+notice.close();
+assert(!notice.visible(),'Dismiss immediately');
+assert(!visit(dismissed,currentSession).visible(),'Dismissal survives navigation and reload');
+assert(!visit(dismissed,storage()).visible(),'Dismissal survives a new session');
+for(const [local,session] of [[blocked,blocked],[storage(),blocked],[blocked,storage()]]){
+ const fallback=visit(local,session);
+ assert(fallback.visible(),'Storage failure leaves a readable notice');
+ fallback.close();
+ assert(!fallback.visible(),'Close still works when storage is blocked');
+}
+for(const invalid of ['garbage','-1','Infinity','1.5']){
+ const local=storage();local.setItem(`${noticeKey}-visits`,invalid);
+ assert(visit(local,storage()).visible(),'Invalid counts start a fresh visit');
+ assert.equal(local.getItem(`${noticeKey}-visits`),'1');
+}
+console.log('Passed: AI notice session counting, persistent dismissal, storage fallback and early rendering.');
 console.log(`Passed: ${files.length} pages, all local links, ${catalogue.length} tool pages, scope, disclosures and source routes.`);

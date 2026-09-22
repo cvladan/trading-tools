@@ -66,3 +66,10 @@
  :is(.tool-card,.visual:not(.compact),.setup-strip,.open-source-panel):hover::before{opacity:1}
 }
 @media(prefers-reduced-motion:reduce),(hover:none),(pointer:coarse){.tool-card:hover,.button:hover{transform:none}.hero-glow{background:radial-gradient(450px circle at 70% 40%,var(--spotlight),transparent)}}
+.ai-notice{display:none}
+:root[data-ai-notice=show] .ai-notice{display:block;padding-top:18px}
+.ai-notice-content{display:flex;align-items:flex-start;gap:12px;padding:12px 12px 12px 18px;border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;background:var(--surface)}
+.ai-notice p{flex:1;margin:0;align-self:center;color:var(--muted);font-size:13px;line-height:1.65}
+.ai-notice strong{color:var(--text);font-weight:600}
+.ai-notice button{display:grid;place-items:center;flex:none;width:44px;height:44px;padding:0;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--muted);cursor:pointer}
+.ai-notice button:hover{color:var(--text);background:var(--surface-2);border-color:var(--border)}
