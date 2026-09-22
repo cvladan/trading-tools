@@ -24,7 +24,7 @@ npm run build
 npm run preview
 ```
 
-Astro builds static HTML from the Markdown entries in `src/content/tools/`. Shared layouts and components live in `src/layouts/` and `src/components/`; plain CSS lives in `src/styles/global.css`. Small browser scripts handle the colour theme, illustrative hover prices and decorative effects. No application backend, database, analytics or client framework is required.
+Astro builds static HTML from the Markdown entries in `src/content/tools/`. Shared layouts and components live in `src/layouts/` and `src/components/`; plain CSS lives in `src/styles/global.css`. Small browser scripts handle the colour theme, illustrative hover prices and decorative effects. No application backend, database or client framework is required. Production builds include Google Analytics using the shared `G-JH4M2ZS15M` web stream; filter reports by Hostname to view this site's traffic separately. The development server omits the tag.
 
 ## Deployment
 

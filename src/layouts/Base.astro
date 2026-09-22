@@ -16,6 +16,15 @@ const schema=path==='/'?[{'@type':'WebSite',name:'Trading tools',url:Astro.site?
 <html lang="en-GB">
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+{import.meta.env.PROD&&<>
+<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-JH4M2ZS15M"></script>
+<script is:inline>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+ gtag('config', 'G-JH4M2ZS15M');
+</script>
+</>}
 <title>{pageTitle}</title>
 <meta name="description" content={description}/><meta name="theme-color" content="#0d1118"/>
 {noindex&&<meta name="robots" content="noindex, follow"/>}
