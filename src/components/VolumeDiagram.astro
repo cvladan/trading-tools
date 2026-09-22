@@ -1,0 +1,24 @@
+---
+interface Props { market: 'stocks' | 'indices'; diagram?: string; compact?: boolean; }
+const { market, diagram = 'How external volume reaches your CFD chart', compact = false } = Astro.props;
+const stocks = market === 'stocks';
+const label = stocks ? 'Stocks' : 'Indices';
+---
+<figure class:list={['visual', 'visual-volume', {compact}]} data-visual="volume" data-market={market}>
+  <div class="visual-top"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>REAL VOLUME / {label.toUpperCase()}</span><span class="sample-tag">DIAGRAM</span></div>
+  <div class="visual-stage"><div class="explanation">
+    <div class="volume-heading">{label}</div>
+    <div class="diagram-node"><span>CFD chart</span><b>{stocks ? 'TRADENATION:NVDA.EX' : 'TRADENATION:USTEC'}</b></div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="diagram-node"><span>{stocks ? 'Stock volume source' : 'Weighted activity proxy'}</span><b>{stocks ? 'NASDAQ:NVDA' : 'MNQ × 1 + NQ × 10 + QQQ × 60'}</b>
+      {!stocks&&!compact&&<div class="volume-sources"><code>MNQ = CME_MINI:MNQ1!</code><code>NQ = CME_MINI:NQ1!</code><code>QQQ = NASDAQ:QQQ</code></div>}
+    </div>
+    {!stocks&&<p class="diagram-note">Weights are configurable. This is an index activity proxy.</p>}
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="diagram-node accent-node"><b>External volume columns</b><div class="volume-bars" aria-hidden="true">{Array.from({length:25},(_,i)=><i style={`height:${15+(i*23)%45}px;--i:${i}`}></i>)}</div></div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="diagram-node"><span>Selected external volume + CFD chart price</span><b>Real VWAP</b></div>
+    {!compact&&<p class="diagram-note">CFD prices weighted by the selected external volume.</p>}
+  </div></div>
+  <figcaption><span class="illustration-label"><i aria-hidden="true"></i>{diagram} · {label}</span></figcaption>
+</figure>

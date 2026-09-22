@@ -29,6 +29,13 @@ for(const file of files){
   assert.match(html,/github.com\/cvladan\/trading-tools\/blob\/main\/public\/sources\//);
  }
 }
+const volumePage=readFileSync(join(root,'tools/real-volume/index.html'),'utf8');
+const volumeFigures=[...volumePage.matchAll(/<figure[^>]*data-market="(stocks|indices)"[^>]*>([\s\S]*?)<\/figure>/g)];
+assert.deepEqual(volumeFigures.map(match=>match[1]),['stocks','indices'],'Real Volume needs separate stock and index diagrams');
+for(const [,market,figure] of volumeFigures){
+ for(const label of ['External volume columns','CFD chart price','Real VWAP'])assert(figure.includes(label),`${market}: complete volume flow`);
+ assert.equal(figure.includes('Weighted activity proxy'),market==='indices','Only the index example uses weighted futures and ETF activity');
+}
 const stats=readFileSync(join(root,'tools/trading-statistics/index.html'),'utf8');
 assert.match(stats,/There is no IG importer/);
 assert.match(readFileSync(join(root,'userscripts/index.html'),'utf8'),/native TradingView Desktop app/);
