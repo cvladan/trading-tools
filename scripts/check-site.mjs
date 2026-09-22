@@ -49,6 +49,15 @@ for(const [,market,figure] of volumeFigures){
  assert.equal(figure.includes('Weighted activity proxy'),market==='indices','Only the index example uses weighted futures and ETF activity');
 }
 const stats=readFileSync(join(root,'tools/trading-statistics/index.html'),'utf8');
+assert.equal(catalogue.find(t=>t.id==='trading-statistics').group,'statistics','Statistics is independent of platform catalogues');
+for(const [platform,group] of [['tradingview','tradingview'],['trade-nation','broker']]){
+ const html=readFileSync(join(root,`userscripts/${platform}/index.html`),'utf8');
+ const cards=[...html.matchAll(/<h3><a href="\/tools\/([^/]+)\//g)].map(match=>match[1]);
+ assert.deepEqual(cards.sort(),catalogue.filter(t=>t.group===group).map(t=>t.id).sort(),`${platform}: only the selected platform's tools`);
+ assert(!cards.includes('trading-statistics'),'Statistics must not be a platform catalogue card');
+}
+assert.match(stats,/Support for IG.com is planned but is not yet implemented/);
+assert.match(stats,/<a href="\/">Home<\/a>/);
 assert.match(stats,/There is no IG importer/);
 assert.match(readFileSync(join(root,'userscripts/index.html'),'utf8'),/native TradingView Desktop app/);
 assert.match(readFileSync(join(root,'tools/info/index.html'),'utf8'),/has not reviewed or tested their mobile output/);

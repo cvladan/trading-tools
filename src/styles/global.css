@@ -76,9 +76,6 @@
 .capture-note{display:block;margin-top:8px;font-size:14px;color:var(--muted)}
 .capture-note strong{color:var(--text);font-weight:600}
 .card-meta .platform-badge{display:inline-block;padding:5px 10px;border:1px solid var(--accent);border-radius:5px;background:var(--surface-2);color:var(--accent);font-size:13px;font-weight:600;line-height:1.5;letter-spacing:0;text-transform:none}
-.section-heading.platform-heading{padding:28px 30px;border-left:4px solid var(--accent);border-radius:0 10px 10px 0;background:var(--surface-2);align-items:center}
-.platform-heading h2{margin-bottom:16px}
-.section-heading.platform-heading>div{max-width:760px}
-.platform-heading .eyebrow{margin-bottom:14px}
-.platform-heading .text-link{flex-shrink:0}
-@media(max-width:800px){.section-heading.platform-heading{padding:22px 20px;align-items:flex-start;flex-direction:column}}
+.footer-catalogues{display:flex;flex-wrap:wrap;gap:12px 24px;padding-bottom:28px;font-size:14px;color:var(--muted)}
+.footer-catalogues a:hover{color:var(--text)}
+@media(max-width:560px){.site-header nav{gap:16px;flex-wrap:wrap}.site-header nav a{font-size:13px}}

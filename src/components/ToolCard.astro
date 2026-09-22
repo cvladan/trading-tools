@@ -3,7 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import Visual from './Visual.astro';
 interface Props { tool: CollectionEntry<'tools'>; volumeMarket?: 'stocks' | 'indices'; }
 const {tool,volumeMarket}=Astro.props;
-const platform=tool.data.group==='tradingview'?'TradingView · Browser':tool.data.group==='broker'?'Trade Nation':undefined;
+const platform=tool.data.group==='tradingview'?'TradingView · Browser':tool.data.group==='broker'?'Trade Nation':tool.data.group==='statistics'?'Imports: Trade Nation':undefined;
 ---
 <article class="tool-card" data-reveal>
 <div class="card-content"><div class="card-meta"><span class:list={{'platform-badge':platform}}>{platform || tool.data.label}</span><span class="card-number">{String(tool.data.order).padStart(2,'0')}</span></div><h3><a href={`/tools/${tool.id}/`}>{tool.data.name.replace('SVKO ', '')}</a></h3><p>{tool.data.summary}</p><a class="text-link" href={`/tools/${tool.id}/`}>See how it works <span aria-hidden="true">↗</span></a></div>

@@ -60,7 +60,7 @@ for(const [path,html] of pages){
   for(const crumb of crumbs)assert(pages.has(new URL(crumb.item).pathname));
   assert.match(html,/<nav class="breadcrumbs" aria-label="Breadcrumb">/);
  }
- if(['/indicators/','/userscripts/'].includes(path)){
+ if(path==='/indicators/'||path.startsWith('/userscripts/')){
   const collection=data.find(item=>item['@type']==='CollectionPage');assert(collection);assert.equal(collection.url,origin+path);
   const items=collection.mainEntity.itemListElement;
   assert.equal(new Set(items.map(item=>item.url)).size,items.length);

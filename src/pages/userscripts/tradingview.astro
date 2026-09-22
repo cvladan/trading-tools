@@ -1,0 +1,11 @@
+---
+import Base from '../../layouts/Base.astro';
+import ToolCard from '../../components/ToolCard.astro';
+import {getCollection} from 'astro:content';
+import {catalogueSchema} from '../../lib';
+const tools=(await getCollection('tools')).filter(t=>t.data.group==='tradingview').sort((a,b)=>a.data.order-b.data.order);
+---
+<Base title="TradingView browser userscripts" description="Customise the TradingView website with AI questions, clickable tickers, tab titles and watchlist prices. Install in a desktop browser." structuredData={[catalogueSchema('TradingView userscripts',tools,Astro.url.pathname,Astro.site!)]}>
+<section class="section-shell page-intro"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/userscripts/">Userscripts</a><span>/</span><span aria-current="page">TradingView</span></nav><div class="eyebrow">TRADINGVIEW WEBSITE / DESKTOP BROWSER</div><h1>TradingView userscripts.</h1><p class="lead">Customise tabs, open charts from ticker text, prepare AI questions and see watchlist prices on hover.</p><div class="jump-links"><a href="/install/">Installation guide ↗</a><a href="/about/#browser">Why I use a dedicated browser ↗</a></div><div class="notice"><div><strong>For the TradingView website.</strong><p>Install with a desktop userscript manager such as Tampermonkey. These tools are not Pine indicators and do not run inside the native TradingView Desktop app. Check each tool's browser and manager requirements.</p></div></div></section>
+<section class="section-shell section-space"><h2>Browser enhancements</h2><div class="tool-grid two">{tools.map(tool=><ToolCard tool={tool}/>)}</div></section>
+</Base>

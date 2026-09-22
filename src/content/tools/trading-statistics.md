@@ -1,13 +1,13 @@
 ---
 {
-  "title": "Review Trade Nation results and costs.",
+  "title": "Review your trading results and costs.",
   "name": "SVKO Trading Statistics",
-  "group": "broker",
+  "group": "statistics",
   "summary": "Archive Trade Nation history, separate trading results from cash movements and review the records behind each total.",
   "label": "Trading archive",
   "order": 10,
   "markets": [
-    "Trade Nation",
+    "Imports: Trade Nation",
     "USD accounts"
   ],
   "visual": "statistics",
@@ -39,7 +39,7 @@ The script imports Trade Nation CFD and Spread transactions into its own browser
 
 ### Import at the broker, view elsewhere
 
-Only two broker importers are currently implemented: Trade Nation CFD at `platform-cfd.tradenation.com` and Spread at `platform.tradenation.com`, for **USD base accounts**. There is no IG importer.
+Only two broker importers are currently implemented: Trade Nation CFD at `platform-cfd.tradenation.com` and Spread at `platform.tradenation.com`, for **USD base accounts**. There is no IG importer. Support for IG.com is planned but is not yet implemented.
 
 Collect new records while signed into the appropriate Trade Nation platform. Afterwards, open the panel through **Open trading statistics** on another ordinary HTTPS page. The broker tab is not needed to read the stored archive. A bookmark ending in `#svko-trading-statistics` can also open it.
 
