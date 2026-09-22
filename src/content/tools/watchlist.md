@@ -21,7 +21,8 @@
   "related": [
     "tradingview-links",
     "info"
-  ]
+  ],
+  "diagram": "Example watchlist price interaction"
 }
 ---
 

@@ -3,7 +3,7 @@
   "title": "Company data beside your CFD chart.",
   "name": "SVKO Info",
   "group": "indicator",
-  "summary": "See the matching share’s company information, earnings, analyst targets and price figures beside your CFD candles.",
+  "summary": "See company information, earnings, analyst targets and price figures for the mapped stock symbol beside your CFD candles.",
   "label": "Stock context",
   "order": 2,
   "markets": [
@@ -23,13 +23,14 @@
   "related": [
     "symbol-mapper",
     "real-volume"
-  ]
+  ],
+  "diagram": "From the CFD symbol to company data"
 }
 ---
 
 ## Why I built it
 
-When I trade a stock CFD, I want the share’s earnings, valuation and price figures on the same chart. Info uses the matching exchange ticker to show the company’s data beside my broker’s candles.
+When I trade a stock CFD, I want the company’s earnings, valuation and stock price figures on the same chart. Info uses the matching exchange ticker to show the company’s data beside my broker’s candles.
 
 ## How it solves the problem
 
@@ -47,7 +48,7 @@ Local mappings take priority. If no local pair matches, Info can use both inputs
 
 Performance uses regular session daily closes. The history window defaults to 365 days; requests outside that window are omitted. The optional mapped price marker places the latest available extended session quote beside the CFD candles. Set its line length to zero to disable it.
 
-Earnings, analyst targets and P/E depend on the listing and available coverage. They are especially useful for shares, and are not promised for indices. Missing values can appear as `N/A`.
+Earnings, analyst targets and P/E depend on the listing and available coverage. They are especially useful for stocks, and are not promised for indices. Missing values can appear as `N/A`.
 
 ### What can change
 

@@ -21,7 +21,8 @@
   ],
   "related": [
     "trading-statistics"
-  ]
+  ],
+  "diagram": "From a manual shortcut to a broker request"
 }
 ---
 

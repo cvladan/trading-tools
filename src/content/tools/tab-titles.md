@@ -21,7 +21,8 @@
   "related": [
     "tradingview-ai",
     "tradingview-links"
-  ]
+  ],
+  "diagram": "Global titles and a single tab override"
 }
 ---
 

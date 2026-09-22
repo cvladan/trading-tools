@@ -22,7 +22,8 @@
   ],
   "related": [
     "trade-nation-hotkeys"
-  ]
+  ],
+  "diagram": "Collect, archive and review broker records"
 }
 ---
 

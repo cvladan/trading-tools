@@ -24,7 +24,8 @@
   "related": [
     "real-volume",
     "symbol-mapper"
-  ]
+  ],
+  "diagram": "Worked example: percentage levels on a CFD chart"
 }
 ---
 

@@ -21,7 +21,8 @@
   "related": [
     "tradingview-links",
     "tab-titles"
-  ]
+  ],
+  "diagram": "From a saved question to selected AI services"
 }
 ---
 

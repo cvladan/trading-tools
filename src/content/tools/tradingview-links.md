@@ -21,7 +21,8 @@
   "related": [
     "tradingview-ai",
     "tab-titles"
-  ]
+  ],
+  "diagram": "From a canvas ticker to its chart"
 }
 ---
 
@@ -33,7 +34,7 @@ A ticker is useful only if I can get to its chart. This tool removes the manual 
 
 A small outline and pointer appear over detected ticker text. Click to open that symbol in the active chart when TradingView's internal chart API is available. Otherwise the script opens a TradingView chart URL.
 
-Use Shift, Ctrl or Command with a click to open a new tab. The userscript menu can also make a new tab the normal click behaviour.
+Use Ctrl or Command with a click to open a new tab. Shift with a click requests a separate popup window. The userscript menu can also make a new tab the normal click behaviour.
 
 ### Choose the symbols it recognises
 

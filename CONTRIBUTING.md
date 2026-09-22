@@ -14,4 +14,4 @@ npm run build
 npm test
 ```
 
-Check narrow phone and desktop layouts, keyboard access and reduced motion. Keep illustrations explicitly labelled until replaced with verified real captures. Source files use the licences listed in `public/sources/LICENSING.md`.
+Check narrow phone and desktop layouts, keyboard access and reduced motion. Keep explanatory diagrams as diagrams. Label interface mockups until replaced with verified real captures. Source files use the licences listed in `public/sources/LICENSING.md`.

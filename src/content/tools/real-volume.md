@@ -3,7 +3,7 @@
   "title": "Choose the volume source for your CFD.",
   "name": "SVKO CFD Stocks & NQ-ES Real Volume",
   "group": "indicator",
-  "summary": "Use share volume for a stock CFD, or a defined futures and ETF activity proxy for NQ and ES.",
+  "summary": "Use stock volume for a stock CFD, or a defined futures and ETF activity proxy for NQ and ES.",
   "label": "Stocks + indices",
   "order": 3,
   "markets": [
@@ -26,19 +26,20 @@
     "symbol-mapper",
     "info",
     "cfd-levels"
-  ]
+  ],
+  "diagram": "How external volume reaches your CFD chart"
 }
 ---
 
 ## Why I built it
 
-I want to see activity in the corresponding market while keeping the CFD chart I trade. The useful source might be an exchange share, or a combination of futures and an ETF. This is a choice of context, not a claim that all broker volume is wrong.
+I want to see activity in the corresponding market while keeping the CFD chart I trade. The useful source might be an exchange stock symbol, or a combination of futures and an ETF. This is a choice of context, not a claim that all broker volume is wrong.
 
 ## How it solves the problem
 
 The indicator displays the chosen volume as columns in its own pane. Optional **Real VWAP** uses that volume to weight the CFD chart's price. It is not the native symbol's VWAP.
 
-For a stock CFD, a direct formula can select the exchange share:
+For a stock CFD, a direct formula can select the stock exchange symbol:
 
 ```text
 TRADENATION:NVDA.EX = NASDAQ:NVDA

@@ -11,11 +11,11 @@ The matching original indicator documentation identifies these as original work 
 - SVKO_CFD_Symbol_Mapper.pine
 - SVKO_Info.pine
 
-These four files remain under MPL-2.0, not the website MIT licence. See [the full MPL-2.0 text](../licences/MPL-2.0.txt).
+These files remain under MPL-2.0, not the website MIT licence. See [the full MPL-2.0 text](../licences/MPL-2.0.txt).
 
 ## Userscripts: MIT
 
-The author approved MIT publication of these five files on 22 September 2026:
+The author approved MIT publication of the following files on 22 September 2026:
 
 - SVKO TradingView AI.user.js
 - SVKO TradingView Links.user.js

@@ -3,10 +3,10 @@ import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 const root=resolve('dist');
 const files=readdirSync(root,{recursive:true}).filter(f=>f.endsWith('.html'));
-assert.equal(files.length,17,'Expected home, two catalogues, ten tools, about, install, capture guide and 404');
+const catalogue=readdirSync('src/content/tools').filter(f=>f.endsWith('.md')).map(file=>({id:file.slice(0,-3),...JSON.parse(readFileSync(join('src/content/tools',file),'utf8').split('---')[1])}));
+assert.deepEqual(files.filter(f=>f.startsWith('tools/')).sort(),catalogue.map(t=>`tools/${t.id}/index.html`).sort(),'Each catalogue entry must have one tool page');
 const sourceFiles=readdirSync('public/sources');
-assert.equal(sourceFiles.filter(f=>f.endsWith('.pine')).length,4);
-assert.equal(sourceFiles.filter(f=>f.endsWith('.user.js')).length,6);
+assert.deepEqual(sourceFiles.filter(f=>f.endsWith('.pine')||f.endsWith('.user.js')).sort(),catalogue.map(t=>t.source).sort(),'Published sources must match the catalogue');
 assert(!sourceFiles.some(f=>/SVKO Dev|Custom Sound/.test(f)));
 for(const file of files){
  const html=readFileSync(join(root,file),'utf8');
@@ -23,7 +23,9 @@ for(const file of files){
  }
  if(file.startsWith('tools/')){
   assert.match(html,/Why I built it/);assert.match(html,/How it solves the problem/);
-  assert.match(html,/Illustrative mockup, not actual product output/);assert.match(html,/Real capture needed:/);
+  const tool=catalogue.find(t=>file===`tools/${t.id}/index.html`);
+  if(tool.diagram){assert(html.includes(tool.diagram));assert(!html.includes('Real capture needed:'));assert(!/<div class="visual-stage">\s*<\/div>/.test(html),`${file}: diagram must contain an explanation`);}
+  else{assert.match(html,/Illustrative mockup, not actual product output/);assert.match(html,/Real capture needed:/);}
   assert.match(html,/github.com\/cvladan\/trading-tools\/blob\/main\/public\/sources\//);
  }
 }
@@ -32,4 +34,4 @@ assert.match(stats,/There is no IG importer/);
 assert.match(readFileSync(join(root,'userscripts/index.html'),'utf8'),/native TradingView Desktop app/);
 assert.match(readFileSync(join(root,'tools/info/index.html'),'utf8'),/has not reviewed or tested their mobile output/);
 assert(existsSync(join(root,'sitemap.xml')));
-console.log(`Passed: ${files.length} pages, all local links, 10 tool pages, scope, disclosures and source routes.`);
+console.log(`Passed: ${files.length} pages, all local links, ${catalogue.length} tool pages, scope, disclosures and source routes.`);

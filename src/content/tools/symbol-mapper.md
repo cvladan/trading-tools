@@ -11,7 +11,8 @@
     "Shared setup"
   ],
   "visual": "mapper",
-  "capture": "Show the mapping pair and both receiver inputs connected to the same Map instance. Include the chart symbol.",
+  "diagram": "Example symbol mapping",
+  "capture": "No screenshot required. Keep the permanent diagram showing the CFD ticker, mapped exchange symbol and both receiver inputs.",
   "source": "SVKO_CFD_Symbol_Mapper.pine",
   "licence": "MPL-2.0",
   "publication": "https://www.tradingview.com/script/XCvJ5tx9-SVKO-CFD-Symbol-Mapper/",
@@ -31,7 +32,7 @@
 
 ## Why I built it
 
-A broker CFD ticker and its underlying share have different identities. Repeating those pairs in every indicator makes a small change unnecessarily repetitive. Mapper gives compatible indicators a shared place to find the counterpart.
+A broker CFD ticker and the matching stock exchange symbol have different identities. Repeating those pairs in every indicator makes a small change unnecessarily repetitive. Mapper gives compatible indicators a shared place to find the counterpart.
 
 ## How it solves the problem
 
