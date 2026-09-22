@@ -2,18 +2,28 @@
 import '../styles/global.css';
 import aiNotice from '../scripts/ai-notice.js?raw';
 import { repository } from '../lib';
-interface Props { title?: string; description?: string; }
-const { title='Trading Tools', description='TradingView indicators and browser userscripts: open source + commercial licence. Free personal use; paid company and work use. Show exchange data on CFD charts, customise TradingView in your browser, and use Trade Nation shortcuts and statistics.' } = Astro.props;
+interface Props { title?: string; description?: string; noindex?: boolean; errorPage?: boolean; structuredData?: Record<string, unknown>[]; }
+const { title='Trading tools for TradingView and CFD brokers', description='TradingView indicators for CFD charts, desktop browser userscripts and Trade Nation utilities. Read setup guides and inspect the source code.', noindex=false, errorPage=false, structuredData=[] } = Astro.props;
 const path=Astro.url.pathname;
+const pageTitle=path==='/'?title:`${title} · Trading tools`;
+const canonical=new URL(path, Astro.site).href;
+const image=new URL('/social-preview.png', Astro.site).href;
+const imageAlt='Trading tools for TradingView and CFD brokers. Indicators, browser userscripts and setup guides.';
+const schema=path==='/'?[{'@type':'WebSite',name:'Trading tools',url:Astro.site?.href,inLanguage:'en-GB'},...structuredData]:structuredData;
 ---
 <!doctype html>
 <html lang="en-GB">
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>{title==='Trading Tools'?title:`${title} · Trading Tools`}</title>
+<title>{pageTitle}</title>
 <meta name="description" content={description}/><meta name="theme-color" content="#0d1118"/>
-<link rel="canonical" href={new URL(path, Astro.site)}/><link rel="icon" href="data:,"/>
-<meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:type" content="website"/><meta property="og:url" content={new URL(path,Astro.site)}/>
+{noindex&&<meta name="robots" content="noindex, follow"/>}
+{!errorPage&&<link rel="canonical" href={canonical}/>}<link rel="icon" href="data:,"/>
+<meta property="og:title" content={pageTitle}/><meta property="og:description" content={description}/><meta property="og:type" content="website"/>{!errorPage&&<meta property="og:url" content={canonical}/>}
+<meta property="og:site_name" content="Trading tools"/><meta property="og:locale" content="en_GB"/>
+<meta property="og:image" content={image}/><meta property="og:image:type" content="image/png"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta property="og:image:alt" content={imageAlt}/>
+<meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content={pageTitle}/><meta name="twitter:description" content={description}/><meta name="twitter:image" content={image}/><meta name="twitter:image:alt" content={imageAlt}/>
+{schema.length>0&&<script type="application/ld+json" set:html={JSON.stringify({'@context':'https://schema.org','@graph':schema}).replaceAll('<','\\u003c')}/>}
 <script is:inline>try{if(localStorage.getItem('trading-tools-theme')==='light')document.documentElement.dataset.theme='light'}catch{}</script>
 <script is:inline set:html={aiNotice}/>
 </head>

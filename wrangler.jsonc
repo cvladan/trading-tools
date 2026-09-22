@@ -1,9 +1,10 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "trading-tools",
+  "main": "worker.js",
   "account_id": "937f638c49f85d0056dbf2aae288fee1",
   "compatibility_date": "2026-09-22",
-  "assets": { "directory": "./dist", "not_found_handling": "404-page" },
+  "assets": { "directory": "./dist", "binding": "ASSETS", "run_worker_first": true, "html_handling": "force-trailing-slash", "not_found_handling": "404-page" },
   "routes": [{ "pattern": "trading.cvladan.com", "custom_domain": true }],
   "workers_dev": true
 }

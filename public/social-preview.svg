@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <title>Trading tools for TradingView and CFD brokers</title>
+  <desc>Indicators, browser userscripts and setup guides at trading.cvladan.com.</desc>
+  <rect width="1200" height="630" fill="#0d1118"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="80" y="210" fill="#9fe870" font-size="96" font-weight="700">Trading tools</text>
+    <text x="84" y="287" fill="#f0f3f7" font-size="43">for TradingView and CFD brokers</text>
+    <text x="84" y="415" fill="#b0bac9" font-size="30">Indicators · Browser userscripts · Setup guides</text>
+    <text x="84" y="548" fill="#9fe870" font-size="27">trading.cvladan.com</text>
+  </g>
+</svg>
