@@ -13,7 +13,7 @@
   "visual": "statistics",
   "capture": "With example or anonymised data, show the overview, calendar and coverage status. Remove account IDs, broker references and private transactions.",
   "source": "SVKO Trading Statistics.user.js",
-  "licence": "MIT",
+  "licence": "SVKO 1.0",
   "install": [
     "Install the complete userscript in Tampermonkey.",
     "Open your signed in Trade Nation CFD or Spread platform with a USD base account to collect history.",

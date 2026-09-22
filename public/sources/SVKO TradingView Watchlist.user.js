@@ -3,13 +3,19 @@
 // @namespace    cvladan.com
 // @version      0.2.0
 // @description  Show extended session percentages and white hover prices for every watchlist instrument.
-// @license      MIT
 // @match        https://www.tradingview.com/chart/*
 // @icon         https://static.tradingview.com/static/images/favicon.ico
 // @noframes
 // @run-at       document-idle
 // @grant        none
+// @license      LicenseRef-SVKO-Personal-Use-Commercial-1.0; https://trading.cvladan.com/licences/SVKO-1.0.txt
 // ==/UserScript==
+// Copyright (c) 2026 Vladan Colovic (SVKO).
+// SVKO Personal Use and Commercial Licence 1.0.
+// Free personal use includes trading real money for your own profit.
+// Company, employment and other business use requires a separate paid licence.
+// Terms: https://trading.cvladan.com/licences/SVKO-1.0.txt
+// Earlier valid licence grants and third-party rights are unaffected.
 
 (() => {
   'use strict';

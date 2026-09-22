@@ -12,7 +12,7 @@
   "visual": "ai",
   "capture": "Show the current chart symbol, the saved question dialog and selected services. Then show the prepared question opening in a service.",
   "source": "SVKO TradingView AI.user.js",
-  "licence": "MIT",
+  "licence": "SVKO 1.0",
   "install": [
     "Install Tampermonkey in your desktop browser and add the complete userscript.",
     "Reload a TradingView chart in that browser.",

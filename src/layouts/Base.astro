@@ -3,7 +3,7 @@ import '../styles/global.css';
 import aiNotice from '../scripts/ai-notice.js?raw';
 import { repository } from '../lib';
 interface Props { title?: string; description?: string; }
-const { title='Trading Tools', description='Practical open-source TradingView indicators and browser userscripts. Show exchange data on CFD charts, customise TradingView in your browser, and use Trade Nation shortcuts and statistics.' } = Astro.props;
+const { title='Trading Tools', description='TradingView indicators and browser userscripts: open source + commercial licence. Free personal use; paid company and work use. Show exchange data on CFD charts, customise TradingView in your browser, and use Trade Nation shortcuts and statistics.' } = Astro.props;
 const path=Astro.url.pathname;
 ---
 <!doctype html>
@@ -24,7 +24,7 @@ const path=Astro.url.pathname;
  <div class="ai-notice-content"><p><strong>Built with AI, shaped by 40 years of software engineering.</strong> I used AI to generate this site and these tools, and made every effort to avoid AI slop. The aim is practical tools that actually help you.</p><button type="button" data-dismiss-ai-notice aria-label="Dismiss AI notice"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
 </aside>
 <main id="main"><slot/></main>
-<footer class="site-footer"><div class="footer-top"><a href="/" class="brand"><span>Trading tools<small>for TradingView and CFD brokers</small></span></a><p>TradingView indicators and desktop browser userscripts.</p><a href={repository}>View the source <span aria-hidden="true">↗</span></a></div><div class="footer-bottom"><span>© {new Date().getFullYear()} Vladan Colovic · SVKO</span><div><a href="/about/">About & licences</a><a href="/capture-guide/">Visual capture guide</a><a href={`${repository}/issues`}>Report an issue</a></div></div><p class="footer-note">Independent tools. Not affiliated with TradingView, IG or Trade Nation. Illustrations use example data.</p></footer>
+<footer class="site-footer"><div class="footer-top"><a href="/" class="brand"><span>Trading tools<small>for TradingView and CFD brokers</small></span></a><p>TradingView indicators and desktop browser userscripts.</p><a href={repository}>View the source <span aria-hidden="true">↗</span></a></div><div class="footer-bottom"><span>© {new Date().getFullYear()} Vladan Colovic · SVKO</span><div><a href="/about/">About</a><a href="/licensing/">Licensing & commercial enquiries</a><a href="/capture-guide/">Visual capture guide</a><a href={`${repository}/issues`}>Report an issue</a></div></div><p class="footer-note"><a href="/licensing/">Open source + commercial licence.</a> Free personal use, including trading for your own profit. Company and work use require a paid agreement. Source available; not an OSI open-source licence.</p><p class="footer-note">Independent tools. Not affiliated with TradingView, IG or Trade Nation. Illustrations use example data.</p></footer>
 <script>
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const theme=document.querySelector<HTMLButtonElement>('.theme-toggle');

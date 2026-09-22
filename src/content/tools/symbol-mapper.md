@@ -14,7 +14,7 @@
   "diagram": "Example symbol mapping",
   "capture": "No screenshot required. Keep the permanent diagram showing the CFD ticker, mapped exchange symbol and both receiver inputs.",
   "source": "SVKO_CFD_Symbol_Mapper.pine",
-  "licence": "MPL-2.0",
+  "licence": "SVKO 1.0",
   "publication": "https://www.tradingview.com/script/XCvJ5tx9-SVKO-CFD-Symbol-Mapper/",
   "install": [
     "Add Symbol Mapper to the same TradingView chart as the receiving indicator.",
@@ -57,4 +57,4 @@ The transport accepts uppercase letters, digits, `-`, `:`, `.`, and `_`, up to 1
 
 ### Credits
 
-Original work by SVKO. Mozilla Public License 2.0, as recorded in the indicator documentation.
+Original work by SVKO. Open source + commercial licence: free personal use, including trading for your own profit; company and work use require a separate paid agreement. See [the licence terms](/licensing/). Earlier valid MPL-2.0 grants remain available for the material they cover.

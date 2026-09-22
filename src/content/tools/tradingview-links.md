@@ -12,7 +12,7 @@
   "visual": "links",
   "capture": "Show a recognised ticker on a canvas with its hover outline, then the chart opened by a normal or modified click.",
   "source": "SVKO TradingView Links.user.js",
-  "licence": "MIT",
+  "licence": "SVKO 1.0",
   "install": [
     "Install the complete userscript in a browser userscript manager.",
     "Reload TradingView and hover over supported ticker text on a canvas.",

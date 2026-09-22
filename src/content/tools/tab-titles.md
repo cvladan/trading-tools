@@ -12,7 +12,7 @@
   "visual": "tabs",
   "capture": "Show browser tabs before and after a global template, and one tab with an override. Keep the tab labels legible.",
   "source": "SVKO TradingView Tab Titles.user.js",
-  "licence": "MIT",
+  "licence": "SVKO 1.0",
   "install": [
     "Install the complete userscript and reload a TradingView chart in your desktop browser.",
     "Choose Set Global Tab Title in the userscript menu and enter a template.",

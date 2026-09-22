@@ -12,7 +12,7 @@
   "visual": "watchlist",
   "capture": "Show the same watchlist badge before and during hover, plus an ordinary instrument displaying its Last price on row hover.",
   "source": "SVKO TradingView Watchlist.user.js",
-  "licence": "MIT",
+  "licence": "SVKO 1.0",
   "install": [
     "Install the complete userscript in Tampermonkey.",
     "Reload a TradingView chart with a watchlist visible.",
@@ -54,4 +54,4 @@ Rows refresh every 1.5 seconds while the tab is visible, and hover reads the row
 
 ### Credits
 
-The supplied source retains its MIT licence notice. Keep that notice when sharing or adapting the script.
+Another author's TradingView watchlist script inspired the idea. I wrote the SVKO implementation independently and publish it under the SVKO Personal Use and Commercial Licence 1.0, like the other userscripts in this collection. See [the licence terms](/licensing/).

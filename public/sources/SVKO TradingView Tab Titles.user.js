@@ -8,7 +8,14 @@
 // @match        https://www.tradingview.com/chart/*
 // @run-at       document-idle
 // @grant        GM_registerMenuCommand
+// @license      LicenseRef-SVKO-Personal-Use-Commercial-1.0; https://trading.cvladan.com/licences/SVKO-1.0.txt
 // ==/UserScript==
+// Copyright (c) 2026 Vladan Colovic (SVKO).
+// SVKO Personal Use and Commercial Licence 1.0.
+// Free personal use includes trading real money for your own profit.
+// Company, employment and other business use requires a separate paid licence.
+// Terms: https://trading.cvladan.com/licences/SVKO-1.0.txt
+// Earlier valid licence grants and third-party rights are unaffected.
 
 (() => {
   'use strict';

@@ -9,6 +9,15 @@ assert.deepEqual(files.filter(f=>f.startsWith('tools/')).sort(),catalogue.map(t=
 const sourceFiles=readdirSync('public/sources');
 assert.deepEqual(sourceFiles.filter(f=>f.endsWith('.pine')||f.endsWith('.user.js')).sort(),catalogue.map(t=>t.source).sort(),'Published sources must match the catalogue');
 assert(!sourceFiles.some(f=>/SVKO Dev|Custom Sound/.test(f)));
+const licence=readFileSync('LICENSE','utf8');
+assert.equal(readFileSync(join(root,'licences/SVKO-1.0.txt'),'utf8'),licence,'The published licence must match LICENSE');
+for(const tool of catalogue){
+ assert.equal(tool.licence,'SVKO 1.0',`${tool.id}: current licence metadata`);
+ const source=readFileSync(join(root,'sources',tool.source),'utf8');
+ assert(source.includes('SVKO Personal Use and Commercial Licence 1.0.'),`${tool.id}: licence notice`);
+ assert(source.includes('https://trading.cvladan.com/licences/SVKO-1.0.txt'),`${tool.id}: full terms`);
+}
+assert.match(readFileSync(join(root,'licensing/index.html'),'utf8'),/Earlier valid licence grants remain effective/);
 for(const file of files){
  const html=readFileSync(join(root,file),'utf8');
  assert.match(html,/<html[^>]+lang="en-GB"/,`${file}: language`);
@@ -23,6 +32,8 @@ for(const file of files){
   assert(existsSync(path),`${file}: broken local link ${value}`);
  }
  if(file.startsWith('tools/')){
+  assert.match(html,/Company and work use/);
+  assert.match(html,/href="\/licensing\/"/);
   assert.match(html,/Why I built it/);assert.match(html,/How it solves the problem/);
   const tool=catalogue.find(t=>file===`tools/${t.id}/index.html`);
   if(tool.diagram){assert(html.includes(tool.diagram));assert(!html.includes('Real capture needed:'));assert(!/<div class="visual-stage">\s*<\/div>/.test(html),`${file}: diagram must contain an explanation`);}

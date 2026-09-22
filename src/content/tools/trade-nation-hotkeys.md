@@ -13,7 +13,7 @@
   "visual": "hotkeys",
   "capture": "Use a demo account. Show the configured hotkeys and an entry, stop and take profit overlay. Do not place a live trade for the capture.",
   "source": "SVKO Trade Nation Hotkeys.user.js",
-  "licence": "MIT",
+  "licence": "SVKO 1.0",
   "install": [
     "Use the documented Firefox or Chrome and Violentmonkey setup.",
     "Add the complete source and review CONFIG before using any shortcut.",

@@ -13,7 +13,7 @@
   "visual": "levels",
   "capture": "Show an NQ or ES CFD chart with the 0% basis, upper and lower levels, current price label and active mapped source.",
   "source": "SVKO_CFD_NQ-ES_Levels.pine",
-  "licence": "MPL-2.0",
+  "licence": "SVKO 1.0",
   "publication": "https://www.tradingview.com/script/VWtZmFRE-SVKO-CFD-NQ-ES-Levels/",
   "install": [
     "Add Levels to the intended NQ or ES CFD chart.",
@@ -58,4 +58,4 @@ Feeds, sessions, spreads, currencies and permissions can cause differences. Unre
 
 ### Credits
 
-Original work by SVKO. Mozilla Public License 2.0, as recorded in the indicator documentation.
+Original work by SVKO. Open source + commercial licence: free personal use, including trading for your own profit; company and work use require a separate paid agreement. See [the licence terms](/licensing/). Earlier valid MPL-2.0 grants remain available for the material they cover.

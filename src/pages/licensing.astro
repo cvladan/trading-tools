@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import { commercialContact, repository } from '../lib';
+---
+<Base title="Licensing & commercial enquiries" description="Open source + commercial licence: free personal trading, including profit; a paid agreement for company and work use. Read the SVKO licence and contact the author.">
+<section class="section-shell page-intro">
+  <div class="eyebrow">OPEN SOURCE + COMMERCIAL LICENCE</div>
+  <h1>Free for personal use.<br/>A paid licence for business.</h1>
+  <p class="lead">Read the code, change it for yourself and trade your own money, including for profit. Company and employment use requires a separate paid commercial agreement with Vladan Colovic (SVKO).</p>
+  <div class="button-row"><a class="button primary" href={commercialContact}>Request a commercial licence ↗</a><a class="button secondary" href="/licences/SVKO-1.0.txt">Read the full licence ↓</a></div>
+</section>
+<section class="section-shell article-page"><article class="prose">
+  <h2>What is free?</h2>
+  <p>A natural person may download, install, run, copy, study and modify the software for their own personal use. This explicitly includes live trading, investing, analysis and record-keeping for their own beneficially owned personal accounts. Earning a profit, trading frequently or relying on personal trading for an income does not, by itself, require a commercial licence.</p>
+  <p>You may use a broker such as Trade Nation for your own personal trading. That does not give the broker permission to integrate or distribute the software. Working for a company does not prevent you from using it privately outside your work duties.</p>
+  <p>Individuals may share original or modified copies free with other individuals for personal use, including as non-business community contributions, subject to the full licence's source, attribution and notice requirements.</p>
+  <h2>When does a business need to pay?</h2>
+  <p>A company or a person using the software for an employer, client or other business must obtain a separate written commercial agreement and pay its agreed fees before use. This includes internal work and business evaluation, not just selling a product. The requirement applies to local userscripts and Pine indicators as well as hosted software.</p>
+  <ul>
+    <li>A broker's employee uses an indicator for work or a company account: a paid agreement is required.</li>
+    <li>Trade Nation integrates, embeds or white-labels a tool in its platform: a paid agreement is required.</li>
+    <li>A broker distributes a tool free to clients, includes it in a subscription, or bundles it with another product: a paid agreement is required.</li>
+    <li>A company hosts the tool or provides its functions or outputs through a web interface or API: a paid agreement is required.</li>
+    <li>A company publishes its changes or runs the tool on customers' computers: neither action removes the commercial requirement.</li>
+  </ul>
+  <p><a href={commercialContact}>Contact Vladan Colovic for a commercial licence</a>. Describe the tools, intended use and distribution or hosting arrangements. The enquiry opens a public GitHub issue; keep confidential information out of it. Enquiring does not itself grant permission, and there is no fixed price or automatic commercial licence on this website.</p>
+  <h2>What does “open source + commercial licence” mean here?</h2>
+  <p>The phrase describes public access to the source and the free-personal/paid-business model. The governing document is the <a href="/licences/SVKO-1.0.txt">SVKO Personal Use and Commercial Licence 1.0</a>, a custom source-available licence. Because it restricts business use, it does not meet the <a href="https://opensource.org/osd">OSI Open Source Definition</a>. It is not MIT, MPL, AGPL or BSL, and it does not automatically convert to one of those licences later.</p>
+  <p>The current original website code and content, all six published userscripts and all four published Pine source copies use these terms. Third-party material keeps its own licences. The <a href={`${repository}/blob/main/public/sources/LICENSING.md`}>source attribution record</a> identifies the files and external components.</p>
+  <h2>When can a company still use material without paying?</h2>
+  <p><strong>Earlier valid licence grants remain effective.</strong> Earlier website and userscript releases were offered under MIT, and earlier Pine releases under MPL-2.0. A company, including Trade Nation, may use and redistribute the material covered by those grants in accordance with their terms. The current licensing update changes notices rather than executable tool code, so that previously released code remains available under its earlier licence. Replacing a notice does not withdraw those permissions.</p>
+  <p>Anyone may read the public website, documentation and source to understand the tools or consider a commercial agreement. An ordinary link to this website is permitted. That does not grant permission to run the tools for business evaluation or to deliver them as a business feature.</p>
+  <p>Rights independently granted by third-party licences, hosting or publication platforms, or applicable law also remain unaffected. Independently created software is not covered merely because it implements a similar idea. No licence text can turn those independent rights into a requirement to pay SVKO.</p>
+  <h2>TradingView and older installed copies</h2>
+  <p>This website's licence update does not change an existing TradingView publication or an installed userscript. Check the licence attached to the version you obtain. Earlier MPL-2.0 grants remain effective, and rights granted through TradingView's publication terms are not withdrawn by this licence. See <a href="https://www.tradingview.com/policies/">TradingView's terms, including section 22</a>.</p>
+  <p>The retained <a href="/licences/MIT.txt">MIT</a> and <a href="/licences/MPL-2.0.txt">MPL-2.0</a> texts document earlier releases and applicable third-party terms. They do not grant those licences for future material supplied only under SVKO 1.0.</p>
+  <h2>Attribution</h2>
+  <p>Watchlist was independently implemented after inspiration from another author's watchlist idea. Trading Statistics uses uPlot under its own MIT licence. Hotkeys acknowledges knowledge of Trade From Chart's platform objects; it does not bundle that extension. These acknowledgements do not transfer ownership of someone else's code.</p>
+  <p>This page explains the model. The <a href="/licences/SVKO-1.0.txt">full licence text</a> governs permissions; a separate commercial agreement governs any business rights purchased from the author.</p>
+</article></section>
+</Base>

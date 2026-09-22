@@ -13,7 +13,7 @@
   "visual": "info",
   "capture": "Show a stock CFD chart beside the Info table: native symbol, earnings, ATR and selected company metrics. Hide private account details.",
   "source": "SVKO_Info.pine",
-  "licence": "MPL-2.0",
+  "licence": "SVKO 1.0",
   "publication": "https://www.tradingview.com/script/XP6l9CnM-SVKO-Info/",
   "install": [
     "Add SVKO Info to your TradingView chart.",
@@ -58,4 +58,4 @@ Performance refresh uses intrabar state that historical bars cannot reproduce af
 
 ### Credits
 
-Original work by SVKO. Mozilla Public License 2.0, as recorded in the indicator documentation.
+Original work by SVKO. Open source + commercial licence: free personal use, including trading for your own profit; company and work use require a separate paid agreement. See [the licence terms](/licensing/). Earlier valid MPL-2.0 grants remain available for the material they cover.
