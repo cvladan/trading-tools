@@ -27,7 +27,15 @@ const path=Astro.url.pathname;
  const observer=new IntersectionObserver(entries=>{for(const entry of entries){if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target)}}},{threshold:.08});
  document.querySelectorAll('[data-reveal]').forEach(el=>observer.observe(el));
  document.querySelectorAll<HTMLButtonElement>('button.watch-row,button.watch-badge').forEach(button=>button.addEventListener('click',()=>button.setAttribute('aria-pressed',String(button.classList.toggle('show-price')))));
- const hero=document.querySelector<HTMLElement>('.hero');
- hero?.addEventListener('pointermove',event=>{if(reduced.matches||event.pointerType==='touch')return;const rect=hero.getBoundingClientRect();hero.style.setProperty('--pointer-x',`${event.clientX-rect.left}px`);hero.style.setProperty('--pointer-y',`${event.clientY-rect.top}px`)});
+ const finePointer=matchMedia('(hover: hover) and (pointer: fine)');
+ document.addEventListener('pointermove',event=>{
+  if(reduced.matches||!finePointer.matches||event.pointerType!=='mouse')return;
+  for(const target of event.composedPath()){
+   if(!(target instanceof HTMLElement)||!target.matches('.hero,.tool-card,.visual:not(.compact),.setup-strip,.open-source-panel'))continue;
+   const rect=target.getBoundingClientRect();
+   target.style.setProperty('--pointer-x',`${event.clientX-rect.left}px`);
+   target.style.setProperty('--pointer-y',`${event.clientY-rect.top}px`);
+  }
+ },{passive:true});
 </script>
 </body></html>
