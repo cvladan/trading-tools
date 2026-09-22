@@ -1,0 +1,399 @@
+//@version=6
+indicator("SVKO CFD NQ-ES Levels", shorttitle = "SVKO CFD NQ-ES Levels", overlay = true, max_lines_count = 50, max_boxes_count = 51)
+
+const string ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-:._"
+const int BASE = 41
+const int ATR_LENGTH = 14
+const int MAX_LEVEL_COUNT = 50
+const string DEFAULT_LEVEL_DEFINITIONS = "DEFAULT = -ATR/2 to ATR step 1"
+const string LEVEL_DEFINITIONS_TOOLTIP = "Enter one DEFAULT definition and optional exact chart-symbol overrides, one per line, in KEY = LEVELS form. Example:\nDEFAULT = -ATR/2 to ATR step 1\nTRADENATION:NFLX = 2, 1.5, 1, 0, -1, -2, -3\n\nEach LEVELS value can combine comma-separated percentages and ranges. A range uses START to END and an optional step SIZE. The default step is 1. Ranges can ascend or descend. Examples:\n3 to -4\n-1 to 0.5 step 0.5, 1.5, 3, 3.5, 5 to 7\n-1 to ATR step 0.5\n-ATR/2 to ATR+1, step 0.5\n\nATR means the last confirmed daily ATR(14) of the chart symbol, never a mapped symbol. The indicator converts ATR to a percentage of the cached 0% basis. Use ATR, +ATR, or -ATR, optionally followed immediately by / and a positive number, then by an optional percentage-point adjustment. Examples: ATR/2, -ATR/2, ATR/3.5+1, and -ATR/2-0.5. Division is applied to ATR before the leading sign and final adjustment. Division by zero or a negative number is invalid. Parentheses, multiplication, and other arithmetic are not supported.\n\nAn ATR endpoint is rounded outwards to its range step, so the outer level is never narrower than the ATR expression. +ATR and ATR are equivalent. An exact chart-symbol entry overrides DEFAULT. DEFAULT is required. Spaces and keyword letter case are ignored. Use decimal points because commas separate items. The 0% level is always added, duplicates are removed, levels are sorted, and the active definition is limited to 50 unique levels. A malformed active definition displays an error and draws no levels."
+const string DEFAULT_FUTURES_MAPPING_PAIRS = "IG:NASDAQ=CME_MINI:NQ1!\nTRADENATION:USTEC=CME_MINI:MNQ1!\nTRADENATIONSB:USTEC=CME_MINI:MNQ1!\nIG:SPTRD=CME_MINI:ES1!\nTRADENATION:US500=CME_MINI:ES1!\nTRADENATIONSB:US500=CME_MINI:ES1!"
+const string DEFAULT_MAIN_SESSION_MAPPING_PAIRS = "IG:NASDAQ=NASDAQ:QQQ\nTRADENATION:USTEC=NASDAQ:QQQ\nTRADENATIONSB:USTEC=NASDAQ:QQQ\nIG:SPTRD=AMEX:SPY\nTRADENATION:US500=AMEX:SPY\nTRADENATIONSB:US500=AMEX:SPY"
+
+groupLevels = "Levels"
+groupSourceMappings = "Source mappings"
+groupSymbolMapper = "Use SVKO CFD Symbol Mapper"
+groupPosition = "Position"
+groupZeroStyle = "Zero Level Style"
+groupUpperStyle = "Upper Level Style"
+groupLowerStyle = "Lower Level Style"
+groupTextStyle = "Text Style"
+groupCurrentPrice = "Current Price"
+
+levelDefinitionsInput = input.text_area(DEFAULT_LEVEL_DEFINITIONS, "Level definitions", tooltip = LEVEL_DEFINITIONS_TOOLTIP, group = groupLevels, display = display.data_window)
+futuresMappingPairsInput = input.text_area(DEFAULT_FUTURES_MAPPING_PAIRS, "Outside main session", tooltip = "Enter one source=target symbol pair per line, using complete TradingView ticker IDs. These source mappings apply outside the configured main session.", group = groupSourceMappings, display = display.data_window)
+mainSessionMappingPairsInput = input.text_area(DEFAULT_MAIN_SESSION_MAPPING_PAIRS, "During main session", tooltip = "Enter one source=target symbol pair per line, using complete TradingView ticker IDs. These source mappings apply during the configured main session.", group = groupSourceMappings, display = display.data_window)
+mainSessionInput = input.session("0930-1600", "Main session", tooltip = "Weekdays in the America/New_York time zone.", group = groupSourceMappings, display = display.data_window)
+distanceFromCandle = input.int(50, "Distance from candle (1m bars)", minval = 0, maxval = 495, tooltip = "Base distance measured in 1-minute bars. It is automatically converted to chart bars on higher timeframes. The combined distance and line length are capped at 500 future bars.", group = groupPosition, display = display.data_window)
+lineLength = input.int(200, "Other line length (1m bars)", minval = 1, maxval = 500, tooltip = "Base length measured in 1-minute bars. It is automatically converted to chart bars on higher timeframes. The combined distance and line length are capped at 500 future bars.", group = groupPosition, display = display.data_window)
+zeroLineStyleInput = input.string("Dotted", "Line style", options = ["Solid", "Dotted", "Dashed"], group = groupZeroStyle, display = display.data_window)
+zeroLineWidth = input.int(1, "Line width", minval = 1, maxval = 5, group = groupZeroStyle, display = display.data_window)
+zeroLineColour = input.color(color.rgb(179, 179, 179), "Line colour", group = groupZeroStyle, display = display.data_window)
+zeroTextColour = input.color(color.rgb(179, 179, 179), "Text colour", group = groupZeroStyle, display = display.data_window)
+upperLineStyleInput = input.string("Dotted", "Line style", options = ["Solid", "Dotted", "Dashed"], group = groupUpperStyle, display = display.data_window)
+upperLineWidth = input.int(1, "Line width", minval = 1, maxval = 5, group = groupUpperStyle, display = display.data_window)
+upperLineColour = input.color(color.new(color.lime, 40), "Line colour", group = groupUpperStyle, display = display.data_window)
+upperTextColour = input.color(color.lime, "Text colour", group = groupUpperStyle, display = display.data_window)
+lowerLineStyleInput = input.string("Dotted", "Line style", options = ["Solid", "Dotted", "Dashed"], group = groupLowerStyle, display = display.data_window)
+lowerLineWidth = input.int(1, "Line width", minval = 1, maxval = 5, group = groupLowerStyle, display = display.data_window)
+lowerLineColour = input.color(color.new(color.red, 40), "Line colour", group = groupLowerStyle, display = display.data_window)
+lowerTextColour = input.color(color.red, "Text colour", group = groupLowerStyle, display = display.data_window)
+showLabels = input.bool(true, "Show labels", group = groupTextStyle, display = display.data_window)
+labelFormat = input.string("<price> / <percent>", "Label format", tooltip = "Format level labels with <percent> and <price>. Other text is displayed literally. Labels are always right-aligned at the right end of their lines.", group = groupTextStyle, display = display.data_window, active = showLabels)
+labelFontSize = input.int(10, "Font size (pt)", minval = 1, group = groupTextStyle, display = display.data_window, active = showLabels)
+labelFontFamilyInput = input.string("Monospace", "Font family", options = ["Default", "Monospace"], group = groupTextStyle, display = display.data_window, active = showLabels)
+labelBackgroundColour = input.color(color.new(color.black, 100), "Background colour", group = groupTextStyle, display = display.data_window, active = showLabels)
+zeroLineLength = input.int(400, "Zero line length (1m bars)", minval = 1, maxval = 500, tooltip = "Base length measured in 1-minute bars. It is automatically converted to chart bars on higher timeframes. The combined distance and zero line length are capped at 500 future bars.", group = groupPosition, display = display.data_window)
+currentPriceLabelFormat = input.string("<percent>", "Label format", tooltip = "Format the moving current-price label with <percent> and <price>. Leave this field empty to hide the label.", group = groupCurrentPrice, display = display.data_window)
+currentPriceLabelPosition = input.int(0, "Distance from candle (bars)", minval = -1, maxval = 494, tooltip = "Use 0 to left-align the label immediately after the latest candle, or a positive value to add empty chart bars. Use -1 to right-align it at the level-line end.", group = groupCurrentPrice, display = display.data_window)
+brokerExchangePrefixesInput = input.string("IG, TRADENATION, TRADENATIONSB", "Broker prefixes", tooltip = "When no active Source mappings entry maps the current chart, the indicator uses the symbol decoded by SVKO CFD Symbol Mapper only if the chart prefix is listed here. Enter comma-separated prefixes. An active session source mapping always takes priority. Default: IG, TRADENATION, TRADENATIONSB.", group = groupSymbolMapper, display = display.data_window)
+mapperCode1Source = input.source(close, "1st code", tooltip = "Used only when no active Source mappings entry matches the current chart and its exchange prefix is listed in Broker prefixes. Add SVKO CFD Symbol Mapper to the same chart, then select Map: 1st code here. An active session source mapping always takes priority.", group = groupSymbolMapper, display = display.data_window)
+mapperCode2Source = input.source(close, "2nd code", tooltip = "Select Map: 2nd code from the same SVKO CFD Symbol Mapper instance. Both codes must be configured. If either source is left on close or the Mapper has no match, the indicator remains empty and makes no fallback daily request.", group = groupSymbolMapper, display = display.data_window)
+
+lineStyle(string value) =>
+    value == "Solid" ? line.style_solid : value == "Dashed" ? line.style_dashed : line.style_dotted
+
+scaleOneMinuteBars(int oneMinuteBars) =>
+    float chartSeconds = timeframe.in_seconds()
+    float effectiveChartSeconds = na(chartSeconds) ? 60.0 : math.max(chartSeconds, 60.0)
+    int scaledBars = int(math.round(float(oneMinuteBars) * 60.0 / effectiveChartSeconds))
+    oneMinuteBars == 0 ? 0 : math.max(scaledBars, 1)
+
+lastConfirmedDailyAtr() =>
+    ta.atr(ATR_LENGTH)[1]
+
+decodeChunk(int code) =>
+    int value = code
+    string result = ""
+    bool valid = value >= 0
+    while value > 0 and valid
+        int digit = value % BASE
+        if digit == 0
+            valid := false
+        else
+            result := str.substring(ALPHABET, digit - 1, digit) + result
+            value := int(value / BASE)
+    valid ? result : "NO SYMBOL MAPPING"
+
+expandTransportSymbol(string symbol) =>
+    str.pos(symbol, "TNSB_") == 0 ? "TRADENATIONSB:" + str.substring(symbol, 5, str.length(symbol)) : str.pos(symbol, "TN_") == 0 ? "TRADENATION:" + str.substring(symbol, 3, str.length(symbol)) : symbol
+
+normaliseBrokerExchangePrefixes(string prefixes) =>
+    "," + str.upper(str.replace_all(prefixes, " ", "")) + ","
+
+isBrokerSymbol(string symbol, string brokerExchangePrefixes) =>
+    int separator = str.pos(symbol, ":")
+    string exchange = separator > 0 ? str.substring(symbol, 0, separator) : ""
+    separator > 0 and str.contains(brokerExchangePrefixes, "," + str.upper(exchange) + ",")
+
+compactSymbol(string rawSymbol) =>
+    str.replace_all(rawSymbol, " ", "")
+
+compactLevelSyntax(string value) =>
+    string compact = str.replace_all(str.upper(value), " ", "")
+    compact := str.replace_all(compact, "\t", "")
+    compact := str.replace_all(compact, "\r", "")
+    str.replace_all(compact, ",STEP", "STEP")
+
+loadLevelDefinitions(map<string, string> definitions, string definitionsInput) =>
+    string errorMessage = ""
+    array<string> lines = str.split(definitionsInput, "\n")
+    int lineCount = array.size(lines)
+    if lineCount > 0
+        for lineIndex = 0 to lineCount - 1
+            string definitionLine = array.get(lines, lineIndex)
+            if compactLevelSyntax(definitionLine) != "" and errorMessage == ""
+                int separator = str.pos(definitionLine, "=")
+                if na(separator) or separator == 0 or separator == str.length(definitionLine) - 1
+                    errorMessage := "Line " + str.tostring(lineIndex + 1) + " must use KEY = LEVELS."
+                else
+                    string definitionKey = str.upper(compactSymbol(str.substring(definitionLine, 0, separator)))
+                    string definitionValue = str.substring(definitionLine, separator + 1, str.length(definitionLine))
+                    if definitionKey == "" or compactLevelSyntax(definitionValue) == ""
+                        errorMessage := "Line " + str.tostring(lineIndex + 1) + " must contain a key and a level definition."
+                    else
+                        map.put(definitions, definitionKey, definitionValue)
+    if errorMessage == "" and not map.contains(definitions, "DEFAULT")
+        errorMessage := "A DEFAULT level definition is required."
+    errorMessage
+
+findActiveLevelDefinition(map<string, string> definitions, string chartSymbol) =>
+    string symbolKey = str.upper(compactSymbol(chartSymbol))
+    map.contains(definitions, symbolKey) ? map.get(definitions, symbolKey) : map.contains(definitions, "DEFAULT") ? map.get(definitions, "DEFAULT") : ""
+
+parseLevelExpression(string expression, float atrPercent) =>
+    string valueText = compactLevelSyntax(expression)
+    bool usesAtr = str.contains(valueText, "ATR")
+    bool valid = valueText != ""
+    float value = na
+    if usesAtr
+        int atrPosition = str.pos(valueText, "ATR")
+        bool validPrefix = atrPosition == 0 or atrPosition == 1 and (str.substring(valueText, 0, 1) == "+" or str.substring(valueText, 0, 1) == "-")
+        int suffixStart = na(atrPosition) ? 0 : atrPosition + 3
+        string suffix = validPrefix and suffixStart <= str.length(valueText) ? str.substring(valueText, suffixStart, str.length(valueText)) : ""
+        float divisor = 1.0
+        string adjustmentText = suffix
+        if str.pos(suffix, "/") == 0
+            int adjustmentPosition = na
+            int suffixLength = str.length(suffix)
+            int suffixIndex = 1
+            while suffixIndex < suffixLength and na(adjustmentPosition)
+                string suffixCharacter = str.substring(suffix, suffixIndex, suffixIndex + 1)
+                if suffixCharacter == "+" or suffixCharacter == "-"
+                    adjustmentPosition := suffixIndex
+                suffixIndex += 1
+            int divisorEnd = na(adjustmentPosition) ? suffixLength : adjustmentPosition
+            string divisorText = str.substring(suffix, 1, divisorEnd)
+            divisor := str.tonumber(divisorText)
+            adjustmentText := na(adjustmentPosition) ? "" : str.substring(suffix, adjustmentPosition, suffixLength)
+        float adjustment = adjustmentText == "" ? 0.0 : str.tonumber(adjustmentText)
+        bool validAdjustment = adjustmentText == "" or not na(adjustment)
+        valid := validPrefix and not na(divisor) and divisor > 0 and validAdjustment and not na(atrPercent) and not str.contains(suffix, "ATR")
+        if valid
+            float atrSign = str.substring(valueText, 0, 1) == "-" ? -1.0 : 1.0
+            value := atrSign * (atrPercent / divisor) + adjustment
+    else
+        value := str.tonumber(valueText)
+        valid := not na(value)
+    [value, valid, usesAtr]
+
+roundAtrEndpointOutwards(float value, float stepSize) =>
+    value > 0 ? math.ceil(value / stepSize - 0.0000001) * stepSize : value < 0 ? math.floor(value / stepSize + 0.0000001) * stepSize : 0.0
+
+appendUniqueLevel(array<float> levels, float value) =>
+    bool exists = false
+    int levelCount = array.size(levels)
+    if levelCount > 0
+        for levelIndex = 0 to levelCount - 1
+            if math.abs(array.get(levels, levelIndex) - value) < 0.0000001
+                exists := true
+    bool canAppend = exists or array.size(levels) < MAX_LEVEL_COUNT
+    if canAppend and not exists
+        array.push(levels, math.abs(value) < 0.0000001 ? 0.0 : value)
+    canAppend
+
+parseLevelDefinition(array<float> levels, string definition, float atrPercent) =>
+    array.clear(levels)
+    array.push(levels, 0.0)
+    string errorMessage = ""
+    string compactDefinition = compactLevelSyntax(definition)
+    array<string> segments = str.split(compactDefinition, ",")
+    int segmentCount = array.size(segments)
+    if compactDefinition == ""
+        errorMessage := "The active level definition is empty."
+    else if segmentCount > 0
+        for segmentIndex = 0 to segmentCount - 1
+            string segment = array.get(segments, segmentIndex)
+            if errorMessage == ""
+                int toPosition = str.pos(segment, "TO")
+                int stepPosition = str.pos(segment, "STEP")
+                if segment == ""
+                    errorMessage := "The active definition contains an empty item."
+                else if na(toPosition)
+                    if not na(stepPosition)
+                        errorMessage := "STEP can be used only with a TO range: " + segment
+                    else
+                        [singleValue, singleValid, singleUsesAtr] = parseLevelExpression(segment, atrPercent)
+                        if not singleValid
+                            errorMessage := "Invalid level expression: " + segment
+                        else
+                            float resolvedSingleValue = singleUsesAtr ? roundAtrEndpointOutwards(singleValue, 1.0) : singleValue
+                            if not appendUniqueLevel(levels, resolvedSingleValue)
+                                errorMessage := "The active definition exceeds 50 unique levels."
+                else
+                    bool stepIsAfterRange = na(stepPosition) or stepPosition > toPosition + 2
+                    int rangeEnd = na(stepPosition) ? str.length(segment) : stepPosition
+                    string startText = str.substring(segment, 0, toPosition)
+                    string endText = stepIsAfterRange ? str.substring(segment, toPosition + 2, rangeEnd) : ""
+                    string stepText = na(stepPosition) ? "1" : stepIsAfterRange ? str.substring(segment, stepPosition + 4, str.length(segment)) : ""
+                    float stepSize = str.tonumber(stepText)
+                    [startValueRaw, startValid, startUsesAtr] = parseLevelExpression(startText, atrPercent)
+                    [endValueRaw, endValid, endUsesAtr] = parseLevelExpression(endText, atrPercent)
+                    if not stepIsAfterRange or na(stepSize) or stepSize <= 0
+                        errorMessage := "Invalid positive STEP in range: " + segment
+                    else if not startValid or not endValid
+                        errorMessage := "Invalid range endpoint: " + segment
+                    else
+                        float startValue = startUsesAtr ? roundAtrEndpointOutwards(startValueRaw, stepSize) : startValueRaw
+                        float endValue = endUsesAtr ? roundAtrEndpointOutwards(endValueRaw, stepSize) : endValueRaw
+                        float intervalCountRaw = math.abs(endValue - startValue) / stepSize
+                        if intervalCountRaw > MAX_LEVEL_COUNT - 1 + 0.000001
+                            errorMessage := "The active definition exceeds 50 unique levels."
+                        else
+                            int intervalCount = int(math.round(intervalCountRaw))
+                            if math.abs(intervalCountRaw - intervalCount) > 0.000001
+                                errorMessage := "Range endpoints must align with STEP: " + segment
+                            else
+                                float direction = endValue >= startValue ? 1.0 : -1.0
+                                for rangeIndex = 0 to intervalCount
+                                    float rangeValue = startValue + direction * stepSize * rangeIndex
+                                    if not appendUniqueLevel(levels, rangeValue) and errorMessage == ""
+                                        errorMessage := "The active definition exceeds 50 unique levels."
+    if errorMessage == ""
+        array.sort(levels, order.ascending)
+    else
+        array.clear(levels)
+    errorMessage
+
+loadMappingPairs(map<string, string> mappings, string mappingPairs) =>
+    array<string> lines = str.split(mappingPairs, "\n")
+    int lineCount = array.size(lines)
+    if lineCount > 0
+        for lineIndex = 0 to lineCount - 1
+            string mappingLine = array.get(lines, lineIndex)
+            int separator = str.pos(mappingLine, "=")
+            if not na(separator)
+                string sourceSymbol = compactSymbol(str.substring(mappingLine, 0, separator))
+                string targetSymbol = compactSymbol(str.substring(mappingLine, separator + 1, str.length(mappingLine)))
+                if sourceSymbol != "" and targetSymbol != ""
+                    map.put(mappings, sourceSymbol, targetSymbol)
+
+findLocalMappedSymbol(map<string, string> mappings, string chartSymbol) =>
+    map.contains(mappings, chartSymbol) ? map.get(mappings, chartSymbol) : ""
+
+formatLevelPercent(float value) =>
+    value == 0 ? "0%" : (value > 0 ? "+" : "") + str.tostring(value, "#.##") + "%"
+
+formatLevelLabel(float levelPercent, float levelPrice, string template) =>
+    string result = str.replace_all(template, "<percent>", formatLevelPercent(levelPercent))
+    str.replace_all(result, "<price>", str.tostring(levelPrice, format.mintick))
+
+chartSymbol = ticker.standard(syminfo.tickerid)
+brokerExchangePrefixes = normaliseBrokerExchangePrefixes(brokerExchangePrefixesInput)
+mapperFallbackEligible = isBrokerSymbol(chartSymbol, brokerExchangePrefixes)
+
+var map<string, string> levelDefinitions = map.new<string, string>()
+var map<string, string> futuresMappings = map.new<string, string>()
+var map<string, string> mainSessionMappings = map.new<string, string>()
+var string levelDefinitionsLoadError = ""
+var string activeLevelDefinition = ""
+
+if barstate.isfirst
+    levelDefinitionsLoadError := loadLevelDefinitions(levelDefinitions, levelDefinitionsInput)
+    activeLevelDefinition := levelDefinitionsLoadError == "" ? findActiveLevelDefinition(levelDefinitions, chartSymbol) : ""
+    loadMappingPairs(futuresMappings, futuresMappingPairsInput)
+    loadMappingPairs(mainSessionMappings, mainSessionMappingPairsInput)
+
+bool activeDefinitionUsesAtr = str.contains(str.upper(activeLevelDefinition), "ATR")
+float confirmedDailyAtr = activeDefinitionUsesAtr ? request.security(chartSymbol, "D", lastConfirmedDailyAtr(), lookahead = barmerge.lookahead_on, ignore_invalid_symbol = true, calc_bars_count = ATR_LENGTH + 1) : na
+
+bool isMainSession = not na(time(timeframe.period, mainSessionInput + ":23456", "America/New_York"))
+string activeMappedSymbol = findLocalMappedSymbol(isMainSession ? mainSessionMappings : futuresMappings, chartSymbol)
+string fallbackMappedSymbol = ""
+if barstate.islast and mapperFallbackEligible and activeMappedSymbol == ""
+    bool mapperSourcesConfigured = mapperCode1Source != close and mapperCode2Source != close
+    int mapperCode1 = int(math.round(mapperCode1Source))
+    int mapperCode2 = int(math.round(mapperCode2Source))
+    string mappedSymbol = expandTransportSymbol(decodeChunk(mapperCode1) + decodeChunk(mapperCode2))
+    bool mapperHasNoMapping = mapperCode1 == 0 and mapperCode2 == 0
+    bool mapperSymbolIsValid = str.contains(mappedSymbol, ":") and not str.contains(mappedSymbol, "NO SYMBOL MAPPING")
+    if mapperSourcesConfigured and not mapperHasNoMapping and mapperSymbolIsValid
+        fallbackMappedSymbol := mappedSymbol
+calculationSymbol = activeMappedSymbol != "" ? activeMappedSymbol : mapperFallbackEligible ? (fallbackMappedSymbol != "" ? fallbackMappedSymbol : "NO SYMBOL MAPPING") : chartSymbol
+hasCalculationSymbol = str.contains(calculationSymbol, ":") and not str.contains(calculationSymbol, "NO SYMBOL MAPPING")
+
+varip float zeroLevel = na
+varip string cachedCalculationSymbol = ""
+varip string levelDefinitionError = ""
+varip array<float> levelPercents = array.new<float>()
+
+bool shouldLoadZeroLevel = barstate.islast and hasCalculationSymbol and (na(zeroLevel) or cachedCalculationSymbol != calculationSymbol)
+if shouldLoadZeroLevel
+    [referenceCurrentClose, referencePreviousClose] = request.security(calculationSymbol, "D", [close, close[1]], ignore_invalid_symbol = true, calc_bars_count = 2)
+    float referenceChangePercent = na(referenceCurrentClose) or na(referencePreviousClose) or referencePreviousClose == 0 ? na : (referenceCurrentClose / referencePreviousClose - 1) * 100
+    float changeMultiplier = na(referenceChangePercent) ? na : 1 + referenceChangePercent / 100
+    float calculatedZeroLevel = na(changeMultiplier) or changeMultiplier == 0 ? na : close / changeMultiplier
+    if not na(calculatedZeroLevel)
+        zeroLevel := calculatedZeroLevel
+        cachedCalculationSymbol := calculationSymbol
+        if levelDefinitionsLoadError != ""
+            levelDefinitionError := levelDefinitionsLoadError
+            array.clear(levelPercents)
+        else if activeDefinitionUsesAtr and na(confirmedDailyAtr)
+            levelDefinitionError := "The last confirmed daily ATR(14) is unavailable for " + chartSymbol + "."
+            array.clear(levelPercents)
+        else
+            float atrPercent = activeDefinitionUsesAtr ? confirmedDailyAtr / calculatedZeroLevel * 100 : na
+            levelDefinitionError := parseLevelDefinition(levelPercents, activeLevelDefinition, atrPercent)
+
+var array<line> levelLines = array.new<line>()
+var array<box> levelTextBoxes = array.new<box>()
+var box currentPriceTextBox = box.new(left = bar_index, top = close, right = bar_index, bottom = close, xloc = xloc.bar_index, border_color = na, bgcolor = labelBackgroundColour, text = "", text_color = color.white, text_size = labelFontSize, text_halign = text.align_right, text_valign = text.align_bottom, text_wrap = text.wrap_none, text_font_family = labelFontFamilyInput == "Monospace" ? font.family_monospace : font.family_default)
+var table levelErrorTable = table.new(position.bottom_right, 1, 1)
+
+if barstate.islast
+    string configurationError = levelDefinitionsLoadError != "" ? levelDefinitionsLoadError : levelDefinitionError
+    table.cell(levelErrorTable, 0, 0, configurationError == "" ? "" : "LEVEL DEFINITIONS ERROR\n" + configurationError, text_color = configurationError == "" ? na : color.white, bgcolor = configurationError == "" ? na : color.new(color.red, 35), text_size = size.small)
+    bool showLevels = not na(zeroLevel) and cachedCalculationSymbol == calculationSymbol and configurationError == "" and array.size(levelPercents) > 0
+    if showLevels
+        int scaledDistanceFromCandle = scaleOneMinuteBars(distanceFromCandle)
+        int scaledLineLength = scaleOneMinuteBars(lineLength)
+        int scaledZeroLineLength = scaleOneMinuteBars(zeroLineLength)
+        int availableLineLength = 500 - scaledDistanceFromCandle
+        int maximumLineLength = math.max(scaledZeroLineLength, scaledLineLength)
+        int lineEnd = bar_index + scaledDistanceFromCandle + math.min(maximumLineLength, availableLineLength)
+        int levelCount = array.size(levelPercents)
+        for levelIndex = 0 to levelCount - 1
+            float levelPercent = array.get(levelPercents, levelIndex)
+            bool isZeroLevel = math.abs(levelPercent) < 0.0000001
+            int levelLineLength = isZeroLevel ? scaledZeroLineLength : scaledLineLength
+            int lineStart = lineEnd - math.min(levelLineLength, availableLineLength)
+            float levelPrice = math.round_to_mintick(zeroLevel * (1 + levelPercent / 100))
+            color levelLineColour = isZeroLevel ? zeroLineColour : levelPercent > 0 ? upperLineColour : lowerLineColour
+            color levelTextColour = isZeroLevel ? zeroTextColour : levelPercent > 0 ? upperTextColour : lowerTextColour
+            int levelLineWidth = isZeroLevel ? zeroLineWidth : levelPercent > 0 ? upperLineWidth : lowerLineWidth
+            string levelLineStyleInput = isZeroLevel ? zeroLineStyleInput : levelPercent > 0 ? upperLineStyleInput : lowerLineStyleInput
+            string levelLabel = showLabels ? formatLevelLabel(levelPercent, levelPrice, labelFormat) : ""
+            if array.size(levelLines) <= levelIndex
+                line newLine = line.new(lineStart, levelPrice, lineEnd, levelPrice, xloc = xloc.bar_index, extend = extend.none, color = levelLineColour, style = lineStyle(levelLineStyleInput), width = levelLineWidth)
+                box newTextBox = box.new(left = lineStart, top = levelPrice, right = lineEnd, bottom = levelPrice, xloc = xloc.bar_index, border_color = na, bgcolor = labelBackgroundColour, text = levelLabel, text_color = levelTextColour, text_size = labelFontSize, text_halign = text.align_right, text_valign = text.align_bottom, text_wrap = text.wrap_none, text_font_family = labelFontFamilyInput == "Monospace" ? font.family_monospace : font.family_default)
+                array.push(levelLines, newLine)
+                array.push(levelTextBoxes, newTextBox)
+            else
+                line existingLine = array.get(levelLines, levelIndex)
+                box existingTextBox = array.get(levelTextBoxes, levelIndex)
+                line.set_xy1(existingLine, lineStart, levelPrice)
+                line.set_xy2(existingLine, lineEnd, levelPrice)
+                line.set_color(existingLine, levelLineColour)
+                line.set_style(existingLine, lineStyle(levelLineStyleInput))
+                line.set_width(existingLine, levelLineWidth)
+                box.set_left(existingTextBox, lineStart)
+                box.set_right(existingTextBox, lineEnd)
+                box.set_top(existingTextBox, levelPrice)
+                box.set_bottom(existingTextBox, levelPrice)
+                box.set_bgcolor(existingTextBox, labelBackgroundColour)
+                box.set_text(existingTextBox, levelLabel)
+                box.set_text_color(existingTextBox, levelTextColour)
+                box.set_text_size(existingTextBox, labelFontSize)
+                box.set_text_font_family(existingTextBox, labelFontFamilyInput == "Monospace" ? font.family_monospace : font.family_default)
+        int existingLevelCount = array.size(levelLines)
+        if existingLevelCount > levelCount
+            for levelIndex = levelCount to existingLevelCount - 1
+                line.set_color(array.get(levelLines, levelIndex), na)
+                box.set_text(array.get(levelTextBoxes, levelIndex), "")
+        bool showCurrentPrice = currentPriceLabelFormat != ""
+        if showCurrentPrice
+            bool rightAlignCurrentPrice = currentPriceLabelPosition == -1
+            int currentPriceTextStart = rightAlignCurrentPrice ? lineEnd - math.min(scaledLineLength, availableLineLength) : bar_index + currentPriceLabelPosition + 1
+            int currentPriceTextEnd = rightAlignCurrentPrice ? lineEnd : math.max(lineEnd, currentPriceTextStart + 1)
+            float currentPrice = close
+            float currentPricePercent = (currentPrice / zeroLevel - 1) * 100
+            string currentPriceLabel = formatLevelLabel(currentPricePercent, currentPrice, currentPriceLabelFormat)
+            box.set_left(currentPriceTextBox, currentPriceTextStart)
+            box.set_right(currentPriceTextBox, currentPriceTextEnd)
+            box.set_top(currentPriceTextBox, currentPrice)
+            box.set_bottom(currentPriceTextBox, currentPrice)
+            box.set_bgcolor(currentPriceTextBox, labelBackgroundColour)
+            box.set_text(currentPriceTextBox, currentPriceLabel)
+            box.set_text_color(currentPriceTextBox, color.white)
+            box.set_text_size(currentPriceTextBox, labelFontSize)
+            box.set_text_halign(currentPriceTextBox, rightAlignCurrentPrice ? text.align_right : text.align_left)
+            box.set_text_font_family(currentPriceTextBox, labelFontFamilyInput == "Monospace" ? font.family_monospace : font.family_default)
+        else
+            box.set_text(currentPriceTextBox, "")
+    else
+        if array.size(levelLines) > 0
+            for levelIndex = 0 to array.size(levelLines) - 1
+                line.set_color(array.get(levelLines, levelIndex), na)
+                box.set_text(array.get(levelTextBoxes, levelIndex), "")
+        box.set_text(currentPriceTextBox, "")

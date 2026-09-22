@@ -1,0 +1,16 @@
+{
+  "name": "trading-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1",
+    "check": "astro check",
+    "test": "node scripts/check-site.mjs",
+    "deploy": "npm run build && wrangler deploy"
+  },
+  "dependencies": { "astro": "7.3.3" },
+  "devDependencies": { "@astrojs/check": "latest", "typescript": "latest", "wrangler": "4.136.2" }
+}

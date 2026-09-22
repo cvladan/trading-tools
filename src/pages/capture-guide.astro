@@ -1,0 +1,8 @@
+---
+import Base from '../layouts/Base.astro';import Visual from '../components/Visual.astro';import {getCollection} from 'astro:content';
+const tools=(await getCollection('tools')).sort((a,b)=>a.data.order-b.data.order);
+---
+<Base title="Visual capture guide" description="Ten annotated examples showing exactly which real screenshots and short clips will replace the current tool illustrations.">
+<section class="section-shell page-intro"><div class="eyebrow">VISUAL GUIDE / FROM ILLUSTRATION TO REAL CAPTURE</div><h1>Show the useful part.</h1><p class="lead">These are the annotated mockups used on the tool pages. Each one names the real screenshot or short recording that will replace it.</p><div class="notice"><div><strong>Capture a feature, not an entire crowded desktop.</strong><p>Keep the relevant symbol, settings and output readable. Use a clean chart and anonymised or demo data. Remove account identifiers and private records. For motion, a short before and after sequence is enough. Do not place a live trade for a recording.</p></div></div></section>
+<section class="section-shell section-space"><div class="capture-grid">{tools.map(tool=><article id={tool.id} class="capture-item"><div class="eyebrow">{String(tool.data.order).padStart(2,'0')} / {tool.data.group==='indicator'?'INDICATOR':'USERSCRIPT'}</div><h2>{tool.data.name}</h2><Visual kind={tool.data.visual} capture={tool.data.capture}/><a href={`/tools/${tool.id}/#example`}>See this example on the tool page ↗</a><p><strong>Suggested file:</strong> <code>{tool.id}.webp</code>, or <code>{tool.id}.mp4</code> when an interaction needs motion. Provide a wide desktop crop and a closer feature crop for phone layouts.</p></article>)}</div></section>
+</Base>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://trading.cvladan.com/sitemap.xml
