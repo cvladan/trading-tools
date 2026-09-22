@@ -19,12 +19,6 @@ Individuals may download, install, run, study and modify the tools free of charg
 
 See [the licensing guide and commercial contact](https://trading.cvladan.com/licensing/). “Open source + commercial licence” describes public access to the code and this personal/business split. Because it restricts business use, this is a source-available licence, not an OSI open-source licence.
 
-## Earlier releases and independent rights
-
-Earlier website and userscript releases were offered under MIT; earlier Pine indicator releases were offered under MPL-2.0. Those valid grants continue to apply to the material they cover, including permitted business use and redistribution. The licensing update changes notices, not the executable tool code: a business may still obtain and use that same code from an earlier legitimately licensed release under its earlier terms. A new notice does not make previously licensed code exclusive.
-
-The [MIT text](../licences/MIT.txt) and [MPL-2.0 text](../licences/MPL-2.0.txt) are retained for those earlier releases; they are not alternative grants for new material supplied only under SVKO 1.0. Keep the licence applicable to the copy and all required notices. TradingView publications may still carry their earlier licence; website updates do not change those publications or the rights already granted through TradingView.
-
 ## External components and acknowledgements
 
 Another author's TradingView watchlist script inspired the idea for SVKO TradingView Watchlist. The SVKO implementation was written independently.

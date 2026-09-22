@@ -58,4 +58,4 @@ Feeds, sessions, spreads, currencies and permissions can cause differences. Unre
 
 ### Credits
 
-Original work by SVKO. Open source + commercial licence: free personal use, including trading for your own profit; company and work use require a separate paid agreement. See [the licence terms](/licensing/). Earlier valid MPL-2.0 grants remain available for the material they cover.
+Original work by SVKO. Open source + commercial licence: free personal use, including trading for your own profit; company and work use require a separate paid agreement. See [the licence terms](/licensing/).

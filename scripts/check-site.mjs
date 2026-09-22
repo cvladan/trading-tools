@@ -17,7 +17,7 @@ for(const tool of catalogue){
  assert(source.includes('SVKO Personal Use and Commercial Licence 1.0.'),`${tool.id}: licence notice`);
  assert(source.includes('https://trading.cvladan.com/licences/SVKO-1.0.txt'),`${tool.id}: full terms`);
 }
-assert.match(readFileSync(join(root,'licensing/index.html'),'utf8'),/Earlier valid licence grants remain effective/);
+assert.doesNotMatch(readFileSync(join(root,'licensing/index.html'),'utf8'),/Earlier valid licence grants|When can a company still use material without paying|previously released code/);
 const mainLinks=[['/indicators/','TradingView Indicators'],['/userscripts/tradingview/','TradingView User Scripts'],['/userscripts/trade-nation/','Trade Nation User Scripts'],['/tools/trading-statistics/','Trading Statistics']];
 for(const file of files){
  const html=readFileSync(join(root,file),'utf8');

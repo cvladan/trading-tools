@@ -15,7 +15,7 @@
 // Free personal use includes trading real money for your own profit.
 // Company, employment and other business use requires a separate paid licence.
 // Terms: https://trading.cvladan.com/licences/SVKO-1.0.txt
-// Earlier valid licence grants and third-party rights are unaffected.
+// Third-party material retains its own licence.
 
 (() => {
   'use strict';

@@ -39,9 +39,9 @@ Anyone may read the publicly accessible website, documentation and source code, 
 Commercial enquiries: https://github.com/cvladan/trading-tools/issues/new?title=Commercial%20licence%20enquiry
 Licence text: https://trading.cvladan.com/licences/SVKO-1.0.txt
 
-6. Existing and third-party rights
+6. Third-party rights and applicable law
 
-This licence does not revoke permissions already validly granted for earlier releases under MIT, MPL-2.0 or another licence. A recipient who has those rights may continue to exercise them for the material they cover, including permitted commercial use and redistribution. Later publication of the same material under this licence does not remove that option. This licence does not restrict independently created material, third-party rights, rights already granted through a hosting or publication platform, or uses permitted by applicable law without a licence. It grants no rights to third-party platforms, accounts, market data, trademarks or dependencies.
+Third-party material remains subject to its own terms. This licence grants no rights to third-party platforms, accounts, market data, trademarks or dependencies. Nothing in this licence overrides rights arising independently under applicable law or third-party licences.
 
 7. No warranty; limitation of liability
 
@@ -51,4 +51,4 @@ To the extent permitted by law, the Licensor is not liable for losses or damage 
 
 8. Termination and other terms
 
-The permissions granted by this licence terminate if you breach its conditions. On termination, stop exercising those permissions unless the Licensor reinstates them in writing. This does not cancel independent rights described in section 6. Sections concerning retained rights, warranty and liability survive termination. If a provision is unenforceable, the remaining provisions continue to apply to the extent permitted by law. No support, updates, exclusivity or trademark rights are promised. Rights not expressly granted are reserved. There is no automatic conversion to another licence after a period of time.
+The permissions granted by this licence terminate if you breach its conditions. On termination, stop exercising those permissions unless the Licensor reinstates them in writing. Sections concerning retained rights, warranty and liability survive termination. If a provision is unenforceable, the remaining provisions continue to apply to the extent permitted by law. No support, updates, exclusivity or trademark rights are promised. Rights not expressly granted are reserved. There is no automatic conversion to another licence after a period of time.

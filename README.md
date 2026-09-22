@@ -50,6 +50,5 @@ The website is responsive and can be read on phones. Userscripts require a suppo
 
 Current original website, userscripts and Pine sources: [SVKO Personal Use and Commercial Licence 1.0](LICENSE). Read [the licensing guide and commercial enquiries](https://trading.cvladan.com/licensing/) and [source licensing and attribution](public/sources/LICENSING.md). Public source access does not grant unrestricted business use: this is a source-available licence, not an OSI open-source licence.
 
-Earlier valid MIT/MPL grants remain available for the material they cover, including commercial permissions. These licensing changes do not alter the executable tool code, so a company can still use the previously published code under its earlier terms. Third-party licences and platform grants remain effective. A website update does not update existing TradingView publications or installed userscripts.
 
 Open an issue for a reproducible problem, or send a focused pull request. Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing changes. Do not include private trading records or account information.
