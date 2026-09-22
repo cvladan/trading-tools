@@ -5,9 +5,8 @@ const stocks = market === 'stocks';
 const label = stocks ? 'Stocks' : 'Indices';
 ---
 <figure class:list={['visual', 'visual-volume', {compact}]} data-visual="volume" data-market={market}>
-  <div class="visual-top"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>REAL VOLUME / {label.toUpperCase()}</span><span class="sample-tag">DIAGRAM</span></div>
+  <figcaption class="figure-heading">{diagram} · {label}</figcaption>
   <div class="visual-stage"><div class="explanation">
-    <div class="volume-heading">{label}</div>
     <div class="diagram-node"><span>CFD chart</span><b>{stocks ? 'TRADENATION:NVDA.EX' : 'TRADENATION:USTEC'}</b></div>
     <div class="flow-arrow" aria-hidden="true">↓</div>
     <div class="diagram-node"><span>{stocks ? 'Stock volume source' : 'Weighted activity proxy'}</span><b>{stocks ? 'NASDAQ:NVDA' : 'MNQ × 1 + NQ × 10 + QQQ × 60'}</b>
@@ -20,5 +19,4 @@ const label = stocks ? 'Stocks' : 'Indices';
     <div class="diagram-node"><span>Selected external volume + CFD chart price</span><b>Real VWAP</b></div>
     {!compact&&<p class="diagram-note">CFD prices weighted by the selected external volume.</p>}
   </div></div>
-  <figcaption><span class="illustration-label"><i aria-hidden="true"></i>{diagram} · {label}</span></figcaption>
 </figure>

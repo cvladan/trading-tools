@@ -9,7 +9,7 @@ const points = values.map((y, i) => `${30 + i * 12},${y}`).join(' ');
 const suffix = Math.random().toString(36).slice(2, 8);
 ---
 {kind === 'volume' ? (compact ? <VolumeDiagram market={volumeMarket} diagram={diagram} compact/> : <div class="volume-diagrams"><VolumeDiagram market="stocks" diagram={diagram}/><VolumeDiagram market="indices" diagram={diagram}/></div>) : <figure class:list={['visual', `visual-${kind}`, { compact }]} data-visual={kind}>
-  <div class="visual-top"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>{kind === 'statistics' ? 'TRADING ARCHIVE' : kind === 'mapper' ? 'SYMBOL CONNECTION' : kind === 'tabs' ? 'BROWSER WORKSPACE' : kind === 'ai' ? 'SAVED QUESTIONS' : kind === 'watchlist' ? 'WATCHLIST' : kind === 'links' ? 'CHART NAVIGATION' : 'CHART WORKSPACE'}</span><span class="sample-tag">{diagram ? "DIAGRAM" : "ILLUSTRATIVE"}</span></div>
+  {diagram && <figcaption class="figure-heading">{diagram}</figcaption>}
   <div class="visual-stage">
   {chart && <>
     <div class="chart-heading"><span><b>NVDA</b><small>CFD · 5 min</small></span><span class="chart-value">124.80 <em>+1.20%</em></span></div>
@@ -39,5 +39,5 @@ const suffix = Math.random().toString(36).slice(2, 8);
   {kind==='hotkeys'&&<div class="explanation"><div class="keys-strip"><span>You press</span><kbd>Ctrl</kbd><span>+</span><kbd>Alt</kbd><span>+</span><kbd>B</kbd></div><div class="flow-arrow" aria-hidden="true">↓</div><div class="diagram-node"><b>Configured market buy request</b></div><div class="flow-arrow" aria-hidden="true">↓</div><div class="diagram-node"><b>Broker accepts or rejects the request</b></div><div class="flow-arrow" aria-hidden="true">↓</div><div class="diagram-node accent-node"><b>Position overlay when available</b><span>Entry · Stop loss</span><span>Take profit, if configured or added later</span></div><div class="diagram-detail"><div class="keys-strip"><kbd>Ctrl</kbd><span>+</span><kbd>Alt</kbd><span>+</span><kbd>E</kbd></div><p class="diagram-note">Move the selected stop to the configured offset from entry.</p><p class="diagram-note">Manual shortcuts for the current broker chart. The overlay displays the position and cannot be dragged.</p></div></div>}
 
   </div>
-  <figcaption><span class="illustration-label"><i aria-hidden="true"></i>{diagram || "Illustrative mockup, not actual product output"}</span>{!diagram&&!compact&&capture&&<span class="capture-note"><strong>Real capture needed:</strong> {capture}</span>}</figcaption>
+  {!diagram && <figcaption>Illustrative mockup, not actual product output{!compact&&capture&&<span class="capture-note"><strong>Real capture needed:</strong> {capture}</span>}</figcaption>}
 </figure>}
