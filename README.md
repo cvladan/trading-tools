@@ -3,7 +3,7 @@
 TradingView indicators and desktop browser userscripts with open source + commercial licence terms, clear setup guides and annotated visual examples. Personal use is free, including real-money trading for your own profit. Company and employment use require a separate paid agreement.
 
 - Website: [trading.cvladan.com](https://trading.cvladan.com)
-- Source and contributions: [cvladan/trading-tools](https://github.com/cvladan/trading-tools)
+- [Source code](https://github.com/cvladan/trading-tools/tree/main/public/sources)
 - Main groups: Indicators and Userscripts
 - Each tool has a stable `/tools/<slug>/` page
 
