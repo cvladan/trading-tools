@@ -17,6 +17,7 @@ for(const status of [200,304,404,307]){
 }
 const files=readdirSync('dist',{recursive:true}).filter(file=>file.endsWith('.html'));
 const pages=new Map(files.map(file=>[file==='404.html'?'/404/':`/${file.replace(/index\.html$/,'')}`,readFileSync(join('dist',file),'utf8')]));
+assert(!pages.has('/capture-guide/'),'The removed capture guide must not be published');
 const titles=new Set(), descriptions=new Set(), indexable=[];
 const attributes=tag=>Object.fromEntries([...tag.matchAll(/([\w:-]+)="([^"]*)"/g)].map(([,key,value])=>[key,value]));
 const metadata=html=>Object.fromEntries([...html.matchAll(/<meta\b[^>]*>/g)].map(([tag])=>{const a=attributes(tag);return [a.name||a.property,a.content]}));
@@ -24,7 +25,8 @@ const schemas=html=>[...html.matchAll(/<script[^>]*type="application\/ld\+json"[
 
 for(const [path,html] of pages){
  const meta=metadata(html), title=html.match(/<title>(.*?)<\/title>/s)?.[1];
- const noindex=path==='/404/'||path==='/capture-guide/';
+ const noindex=path==='/404/';
+ assert(!html.includes('/capture-guide/'),`${path}: no links to the removed guide`);
  assert(title&&!titles.has(title),`${path}: useful, unique title`);titles.add(title);
  assert(meta.description&&!descriptions.has(meta.description),`${path}: unique description`);descriptions.add(meta.description);
  assert.equal(meta.robots,noindex?'noindex, follow':undefined,`${path}: intentional indexability`);
@@ -87,7 +89,7 @@ if(process.argv.includes('--live')){
   const response=await request(origin+path);assert.equal(response.status,200,path);
   assert.deepEqual(Buffer.from(await response.arrayBuffer()),readFileSync('dist'+path),`${path}: production matches build`);
  }
- for(const path of ['/seo-verification-missing/','/tools/seo-verification-missing/']){
+ for(const path of ['/seo-verification-missing/','/tools/seo-verification-missing/','/capture-guide/']){
   const response=await request(origin+path);assert.equal(response.status,404,path);
   const html=await response.text();assert.equal(metadata(html).robots,'noindex, follow');assert(!html.includes('rel="canonical"'));
  }

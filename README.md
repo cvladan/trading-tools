@@ -42,7 +42,7 @@ Use an authorised Cloudflare account. Credentials stay in Wrangler's local crede
 
 Public content uses British English. Tool pages explain the problem, the practical solution, setup and relevant limitations. Source copies in `public/sources/` are separate from the site implementation and retain their notices.
 
-Permanent explanatory diagrams show how each tool works. Numerical examples are labelled. The homepage workspace remains an illustrative mockup with synthetic values. [The capture checklist](SCREENSHOT_CHECKLIST.md) lists optional screenshots or clips that can add a view of the actual interfaces. The public `/capture-guide/` shows the diagrams and matching capture suggestions. No screenshot is required to complete a diagram.
+Permanent explanatory diagrams show how each tool works. Numerical examples are labelled. The homepage workspace remains an illustrative mockup with synthetic values. [The capture checklist](SCREENSHOT_CHECKLIST.md) lists optional screenshots or clips that can add a view of the actual interfaces. No screenshot is required to complete a diagram.
 
 The website is responsive and can be read on phones. Userscripts require a supported desktop browser and manager. Pine mobile rendering is possible, but the author's mobile output has not been reviewed or tested.
 
