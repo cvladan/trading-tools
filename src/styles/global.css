@@ -30,3 +30,22 @@
 @media(max-width:560px){.explanation{padding:12px}.diagram-branches{grid-template-columns:1fr;gap:12px}.diagram-node b{font-size:13px}.diagram-note{font-size:12px}.worked-levels text{font-size:16px}.compact .diagram-branches{grid-template-columns:1fr}.visual .watch-row .watch-symbol{font-size:12px}.watchlist-demo{padding:12px 4px}.watch-row{padding-inline:8px}.watch-symbol{gap:8px}}
 
 .volume-diagrams{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start}.volume-heading{font-size:20px;font-weight:600;color:#e3edf5;margin-bottom:20px}.volume-sources{display:grid;gap:4px;margin-top:12px;color:#b7c7d8;font-size:12px}.compact .volume-heading{font-size:15px;margin-bottom:12px}.compact.visual-volume .volume-bars{height:36px}.compact.visual-volume .volume-bars i{max-height:30px}.capture-item:has(.volume-diagrams){grid-column:1/-1}@media(max-width:800px){.volume-diagrams{grid-template-columns:1fr}}
+
+/* Shared light palette for HTML diagrams and inline SVG illustrations. */
+:root[data-theme=light] .visual{--visual-positive:var(--positive);--visual-negative:var(--danger);--visual-reference:#2f5c99;--visual-muted:var(--muted);--visual-label-bg:var(--surface-2);--visual-accent:var(--accent);background:var(--surface);color:var(--text)}
+:root[data-theme=light] .visual :is(.visual-top,figcaption,.volume-bars,.info-float,.info-float>div,.symbol-node,.receiver,.watch-row,.watch-badge,.browser-tabs,.browser-tabs span,.question-box,.diagram-node,.info-groups>span,.keys-strip kbd){border-color:var(--border)}
+:root[data-theme=light] .visual :is(figcaption,.symbol-node,.receiver,.watch-badge,.browser-tabs span,.question-box,.diagram-node,.info-groups>span,.keys-strip kbd){background:var(--surface-2)}
+:root[data-theme=light] .visual .info-float{background:var(--surface);box-shadow:var(--shadow)}
+:root[data-theme=light] .visual :is(.diagram-node b,.info-groups>span,.watch-symbol b,.watch-row,.keys-strip kbd,.volume-heading,.template-demo code,.formula-strip code,.tabs-demo p b){color:var(--text)}
+:root[data-theme=light] .visual :is(.visual-top,.sample-tag,figcaption,.capture-note,.mini-label,.chart-heading small,.info-float span,.info-float>small,.formula-strip,.symbol-node span,.receiver>span,.receiver code,.mapper-demo>small,.list-head,.watch-row>span,.watch-example-label,.demo-hint,.template-demo>span:first-child,.tabs-demo p,.ticker-cloud>span,.keys-strip,.diagram-node span,.flow-arrow small,.diagram-note,.volume-sources,.chart-key){color:var(--muted)}
+:root[data-theme=light] .visual :is(.symbol-node.native,.accent-node,.ticker-cloud .selected-ticker){background:color-mix(in srgb,var(--accent-fill) 16%,var(--surface));border-color:var(--accent)}
+:root[data-theme=light] .visual :is(.symbol-node.native strong,.connection b,.receiver em,.demo-hint>span,.named-tabs span,.flow-arrow,.question-box strong,.ticker-cloud .selected-ticker,.accent-node b,.accent-label){color:var(--accent)}
+:root[data-theme=light] .visual :is(.connection b,.named-tabs span){border-color:var(--accent)}
+:root[data-theme=light] .visual :is(.connection i,.connection i:after){background:var(--accent)}
+:root[data-theme=light] .visual .window-dots i{background:var(--muted)}
+:root[data-theme=light] .visual .illustration-label i{border-color:#80581f}
+:root[data-theme=light] .visual .capture-note strong{color:#80581f}
+:root[data-theme=light] .visual :is(.positive,.chart-value em,.chart-key span:first-child){color:var(--positive)}
+:root[data-theme=light] .visual :is(.negative,.chart-key span:last-child){color:var(--danger)}
+:root[data-theme=light] .visual :is(.ordinary-row:hover,.ordinary-row:focus-visible,.ordinary-row.show-price){background:var(--surface-2)}
+:root[data-theme=light] .visual :is(.price,.row-price){background:#182534;color:#fff;border-radius:4px;padding:3px 5px}
