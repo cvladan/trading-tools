@@ -8,3 +8,7 @@ dist/
 .DS_Store
 AGENTS.md
 artifacts/
+
+/SCREENSHOT_CHECKLIST.md
+/SEO.md
+/scripts/

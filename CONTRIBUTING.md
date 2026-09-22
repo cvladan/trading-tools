@@ -11,7 +11,6 @@ For website changes, run:
 ```sh
 npm run check
 npm run build
-npm test
 ```
 
 Check narrow phone and desktop layouts, keyboard access and reduced motion. Keep explanatory diagrams as diagrams. Label interface mockups until replaced with verified real captures. Source files use the licences listed in `public/sources/LICENSING.md`.
