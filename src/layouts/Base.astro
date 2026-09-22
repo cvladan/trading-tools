@@ -2,9 +2,10 @@
 import '../styles/global.css';
 import aiNotice from '../scripts/ai-notice.js?raw';
 import { repository } from '../lib';
-interface Props { title?: string; description?: string; noindex?: boolean; errorPage?: boolean; structuredData?: Record<string, unknown>[]; }
-const { title='Trading tools for TradingView and CFD brokers', description='TradingView indicators for CFD charts, desktop browser userscripts and Trade Nation utilities. Read setup guides and inspect the source code.', noindex=false, errorPage=false, structuredData=[] } = Astro.props;
+interface Props { title?: string; description?: string; noindex?: boolean; errorPage?: boolean; navigationPath?: string; structuredData?: Record<string, unknown>[]; }
+const { title='Trading tools for TradingView and CFD brokers', description='TradingView indicators for CFD charts, desktop browser userscripts and Trade Nation utilities. Read setup guides and inspect the source code.', noindex=false, errorPage=false, navigationPath=Astro.url.pathname, structuredData=[] } = Astro.props;
 const path=Astro.url.pathname;
+const current=(href: string)=>navigationPath===href?(path===href?'page':'true'):undefined;
 const pageTitle=path==='/'?title:`${title} · Trading tools`;
 const canonical=new URL(path, Astro.site).href;
 const image=new URL('/social-preview.png', Astro.site).href;
@@ -29,7 +30,7 @@ const schema=path==='/'?[{'@type':'WebSite',name:'Trading tools',url:Astro.site?
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
-<header class="site-header"><div class="nav-wrap section-shell"><a href="/" class="brand" aria-label="Trading tools home"><span>Trading tools<small>for TradingView and CFD brokers</small></span></a><nav aria-label="Main navigation"><a href="/indicators/" aria-current={path.startsWith('/indicators')?'page':undefined}>Indicators</a><a href="/userscripts/" aria-current={path.startsWith('/userscripts')?'page':undefined}>Userscripts</a><a href="/tools/trading-statistics/" aria-current={path==='/tools/trading-statistics/'?'page':undefined}>Trading Statistics</a></nav><div class="nav-actions"><button class="theme-toggle" type="button" aria-label="Switch colour theme" title="Switch colour theme"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg></button><a class="github-nav" href={repository} target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a></div></div></header>
+<header class="site-header"><div class="nav-wrap section-shell"><a href="/" class="brand" aria-label="Trading tools home"><span>Trading tools<small>for TradingView and CFD brokers</small></span></a><nav aria-label="Main navigation"><a href="/indicators/" aria-current={current('/indicators/')}>TradingView Indicators</a><a href="/userscripts/tradingview/" aria-current={current('/userscripts/tradingview/')}>TradingView User Scripts</a><a href="/userscripts/trade-nation/" aria-current={current('/userscripts/trade-nation/')}>Trade Nation User Scripts</a><a href="/tools/trading-statistics/" aria-current={current('/tools/trading-statistics/')}>Trading Statistics</a></nav><div class="nav-actions"><button class="theme-toggle" type="button" aria-label="Switch colour theme" title="Switch colour theme"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg></button></div></div></header>
 <aside class="ai-notice section-shell" aria-label="About the use of AI">
  <div class="ai-notice-content"><p><strong>Built with AI, shaped by 40 years of software engineering.</strong> I used AI to generate this site and these tools, and made every effort to avoid AI slop. The aim is practical tools that actually help you.</p><button type="button" data-dismiss-ai-notice aria-label="Dismiss AI notice"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
 </aside>

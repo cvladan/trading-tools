@@ -18,8 +18,16 @@ for(const tool of catalogue){
  assert(source.includes('https://trading.cvladan.com/licences/SVKO-1.0.txt'),`${tool.id}: full terms`);
 }
 assert.match(readFileSync(join(root,'licensing/index.html'),'utf8'),/Earlier valid licence grants remain effective/);
+const mainLinks=[['/indicators/','TradingView Indicators'],['/userscripts/tradingview/','TradingView User Scripts'],['/userscripts/trade-nation/','Trade Nation User Scripts'],['/tools/trading-statistics/','Trading Statistics']];
 for(const file of files){
  const html=readFileSync(join(root,file),'utf8');
+ const menu=html.match(/<nav aria-label="Main navigation">([\s\S]*?)<\/nav>/)?.[1];
+ assert(menu,`${file}: main navigation`);
+ const links=[...menu.matchAll(/<a href="([^"]+)"([^>]*)>([^<]+)<\/a>/g)];
+ assert.deepEqual(links.map(([,href,,label])=>[href,label]),mainLinks,`${file}: exact main menu labels and order`);
+ const tool=catalogue.find(t=>file===`tools/${t.id}/index.html`);
+ const section=tool?{indicator:0,tradingview:1,broker:2,statistics:3}[tool.group]:mainLinks.findIndex(([href])=>file===`${href.slice(1)}index.html`);
+ for(let index=0;index<links.length;index++)assert.equal(/aria-current="(?:page|true)"/.test(links[index][2]),index===section,`${file}: current navigation section`);
  assert.match(html,/<html[^>]+lang="en-GB"/,`${file}: language`);
  assert.equal((html.match(/<h1[ >]/g)||[]).length,1,`${file}: one page heading`);
  assert(!/Pending confirmation|TODO|SVKO Dev|Custom Sound/.test(html),`${file}: internal or excluded content`);
