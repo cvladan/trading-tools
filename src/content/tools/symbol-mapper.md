@@ -1,9 +1,9 @@
 ---
 {
-  "title": "One mapping. A shared starting point.",
+  "title": "Match CFD and exchange symbols.",
   "name": "SVKO CFD Symbol Mapper",
   "group": "indicator",
-  "summary": "Connect a CFD symbol to its native counterpart and share that identity with your indicators.",
+  "summary": "Match a broker CFD ticker to its exchange symbol, then share that match with compatible indicators.",
   "label": "Start here",
   "order": 1,
   "markets": [
@@ -35,7 +35,7 @@ A broker CFD ticker and its underlying share have different identities. Repeatin
 
 ## How it solves the problem
 
-Add **Map** once to the chart, configure the pair and connect both receiver inputs. It sends the symbol identity through two hidden plots. The receiving tool then requests the data it needs. Mapper itself draws nothing and fetches no price or volume.
+Add **Map** once to the chart, configure the pair and connect both receiver inputs. It sends the symbol identity through two hidden plots. After setup, Map looks up the current chart symbol automatically, and the receiving tool requests the data it needs. Mapper itself draws nothing and fetches no price or volume.
 
 ```text
 TRADENATION:NVDA.EX = NASDAQ:NVDA
@@ -48,7 +48,7 @@ Custom pairs take priority over the built in Trade Nation map. On an eligible br
 
 Use Mapper when **Info**, **Real Volume** or **Levels** receives its two code inputs. Keep it on that chart after the initial connection. You do not need it when Info or Levels has a suitable local mapping, or Real Volume has an explicit formula. Those settings take priority.
 
-### A useful boundary
+### Supported symbols and mapping limits
 
 The source recognises IG, Trade Nation and Trade Nation SB prefixes. This is not a promise that every instrument has a built in pair. Unresolved mappings send zero and receivers remain empty where appropriate.
 

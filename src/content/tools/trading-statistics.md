@@ -1,6 +1,6 @@
 ---
 {
-  "title": "Your history, with the costs included.",
+  "title": "Review Trade Nation results and costs.",
   "name": "SVKO Trading Statistics",
   "group": "broker",
   "summary": "Archive Trade Nation history, separate trading results from cash movements and review the records behind each total.",
@@ -50,6 +50,6 @@ Each pull compares the available history against a separate broker export. Data 
 
 Automatic internal transfer matching requires a unique opposite amount in the same currency across two accounts, within one second. It is an inference; missing history can change the split. Manual classifications remain available.
 
-### Keep the archive useful
+### Check history coverage and save backups
 
 Use all available history for the first baseline, review incomplete coverage and source changes, and keep JSON backups. Older broker records may stop being available. Empty calendar cells mean no stored activity, not proof of no trading. The website's example chart uses illustrative values and is not an account performance claim.

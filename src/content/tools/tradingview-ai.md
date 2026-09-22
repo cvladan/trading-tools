@@ -1,6 +1,6 @@
 ---
 {
-  "title": "A useful question, already filled in.",
+  "title": "Open AI questions for your chart symbol.",
   "name": "SVKO TradingView AI",
   "group": "tradingview",
   "summary": "Open your saved AI questions with the current TradingView symbol already inserted.",

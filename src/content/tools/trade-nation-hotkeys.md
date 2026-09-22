@@ -1,6 +1,6 @@
 ---
 {
-  "title": "The actions you use, on the keyboard.",
+  "title": "Place and manage trades with hotkeys.",
   "name": "SVKO Trade Nation Hotkeys",
   "group": "broker",
   "summary": "Manual trading shortcuts and a position overlay for supported Trade Nation and TradeDirect365 chart pages.",

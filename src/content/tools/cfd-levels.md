@@ -1,6 +1,6 @@
 ---
 {
-  "title": "Different prices. Comparable moves.",
+  "title": "Map percentage moves onto CFD prices.",
   "name": "SVKO CFD NQ-ES Levels",
   "group": "indicator",
   "summary": "Translate the underlying market’s percentage move into levels on your Nasdaq 100 or S&P 500 CFD chart.",

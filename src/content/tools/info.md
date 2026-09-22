@@ -1,9 +1,9 @@
 ---
 {
-  "title": "The share behind your CFD.",
+  "title": "Company data beside your CFD chart.",
   "name": "SVKO Info",
   "group": "indicator",
-  "summary": "Keep the underlying company, earnings and market context beside your CFD candles.",
+  "summary": "See the matching share’s company information, earnings, analyst targets and price figures beside your CFD candles.",
   "label": "Stock context",
   "order": 2,
   "markets": [
@@ -29,7 +29,7 @@
 
 ## Why I built it
 
-When I trade a stock CFD, I still need context about the actual share. A broker instrument is not the native listing. Info brings the mapped company's information onto the chart I am using.
+When I trade a stock CFD, I want the share’s earnings, valuation and price figures on the same chart. Info uses the matching exchange ticker to show the company’s data beside my broker’s candles.
 
 ## How it solves the problem
 
@@ -43,7 +43,7 @@ TRADENATION:NVDA = NASDAQ:NVDA
 
 Local mappings take priority. If no local pair matches, Info can use both inputs from **Symbol Mapper**. On native charts, it uses the chart's own symbol. A broker chart with no resolved counterpart remains empty.
 
-### Keep only the context you use
+### Choose the figures to display
 
 Performance uses regular session daily closes. The history window defaults to 365 days; requests outside that window are omitted. The optional mapped price marker places the latest available extended session quote beside the CFD candles. Set its line length to zero to disable it.
 

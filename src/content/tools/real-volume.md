@@ -1,6 +1,6 @@
 ---
 {
-  "title": "See the activity behind the price.",
+  "title": "Choose the volume source for your CFD.",
   "name": "SVKO CFD Stocks & NQ-ES Real Volume",
   "group": "indicator",
   "summary": "Use share volume for a stock CFD, or a defined futures and ETF activity proxy for NQ and ES.",

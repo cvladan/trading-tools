@@ -1,6 +1,6 @@
 ---
 {
-  "title": "Know which chart is in which tab.",
+  "title": "Name your TradingView browser tabs.",
   "name": "SVKO TradingView Tab Titles",
   "group": "tradingview",
   "summary": "Give TradingView browser tabs meaningful names, with one global template and individual tab overrides.",
@@ -39,7 +39,7 @@ Set one global template, then override it for a particular tab if needed. The sc
 
 The five title parts represent the symbol, price, direction arrow, percentage change and remaining market label. Templates also support `<layout>` and `<symbol>`, plus direction arrow variants from `v1` to `v8`.
 
-### One default, exceptions where useful
+### Set a global title or a title for one tab
 
 **Set Global Tab Title** stores the shared template in the browser's local storage. **Set This Tab Title** stores an override in that tab's session storage. The override wins; clearing it restores the global template. Clear both to restore TradingView's native title.
 

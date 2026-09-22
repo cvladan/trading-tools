@@ -1,6 +1,6 @@
 ---
 {
-  "title": "From a ticker to its chart.",
+  "title": "Click a ticker to open its chart.",
   "name": "SVKO TradingView Links",
   "group": "tradingview",
   "summary": "Click recognised ticker text drawn on a TradingView canvas to open the corresponding chart.",

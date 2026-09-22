@@ -1,6 +1,6 @@
 ---
 {
-  "title": "The price is a hover away.",
+  "title": "See watchlist prices on hover.",
   "name": "SVKO TradingView Watchlist",
   "group": "tradingview",
   "summary": "Keep extended session percentages visible, then hover for a price without leaving the watchlist.",

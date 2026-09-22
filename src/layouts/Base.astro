@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import { repository } from '../lib';
 interface Props { title?: string; description?: string; }
-const { title='Trading Tools', description='Practical open-source TradingView indicators and browser userscripts. Connect CFD charts to underlying market context and make your trading workspace more useful.' } = Astro.props;
+const { title='Trading Tools', description='Practical open-source TradingView indicators and browser userscripts. Show exchange data on CFD charts, customise TradingView in your browser, and use Trade Nation shortcuts and statistics.' } = Astro.props;
 const path=Astro.url.pathname;
 ---
 <!doctype html>
@@ -19,7 +19,7 @@ const path=Astro.url.pathname;
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><div class="nav-wrap"><a href="/" class="brand" aria-label="Trading Tools home"><img src="/favicon.svg" alt="" width="33" height="33"/><span>Trading<span class="brand-light">Tools</span><small>BY SVKO</small></span></a><nav aria-label="Main navigation"><a href="/indicators/" aria-current={path.startsWith('/indicators')?'page':undefined}>Indicators</a><a href="/userscripts/" aria-current={path.startsWith('/userscripts')?'page':undefined}>Userscripts</a></nav><div class="nav-actions"><button class="theme-toggle" type="button" aria-label="Switch colour theme" title="Switch colour theme"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg></button><a class="github-nav" href={repository} target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a></div></div></header>
 <main id="main"><slot/></main>
-<footer class="site-footer"><div class="footer-top"><a href="/" class="brand"><img src="/favicon.svg" alt="" width="30" height="30"/><span>Trading<span class="brand-light">Tools</span></span></a><p>Useful additions to the way you already trade.</p><a href={repository}>View the source <span aria-hidden="true">↗</span></a></div><div class="footer-bottom"><span>© {new Date().getFullYear()} Vladan Colovic · SVKO</span><div><a href="/about/">About & licences</a><a href="/capture-guide/">Visual capture guide</a><a href={`${repository}/issues`}>Report an issue</a></div></div><p class="footer-note">Independent tools. Not affiliated with TradingView, IG or Trade Nation. Illustrations use example data.</p></footer>
+<footer class="site-footer"><div class="footer-top"><a href="/" class="brand"><img src="/favicon.svg" alt="" width="30" height="30"/><span>Trading<span class="brand-light">Tools</span></span></a><p>TradingView indicators and desktop browser userscripts.</p><a href={repository}>View the source <span aria-hidden="true">↗</span></a></div><div class="footer-bottom"><span>© {new Date().getFullYear()} Vladan Colovic · SVKO</span><div><a href="/about/">About & licences</a><a href="/capture-guide/">Visual capture guide</a><a href={`${repository}/issues`}>Report an issue</a></div></div><p class="footer-note">Independent tools. Not affiliated with TradingView, IG or Trade Nation. Illustrations use example data.</p></footer>
 <script>
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const theme=document.querySelector<HTMLButtonElement>('.theme-toggle');
