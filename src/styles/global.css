@@ -94,3 +94,6 @@
 .footer-bottom>span{flex-shrink:0}.footer-bottom p{max-width:620px;margin:0}
 @media(max-width:980px){.footer-main{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 40px}.footer-bottom{flex-direction:column;gap:8px}}
 @media(max-width:560px){.footer-main{gap:24px 20px;padding-block:28px 24px}.footer-identity,.footer-licence{grid-column:1/-1}.footer-source{margin-top:16px}.footer-links h2{min-height:36px;margin-bottom:4px}.footer-links a{font-size:13px}.footer-bottom{padding-block:16px 20px}}
+
+/* Keep the alert flow readable in both catalogue and full page diagrams. */
+.visual-alert-speech .diagram-node b{font-size:14px}.visual-alert-speech .diagram-node span{font-size:12px}.visual-alert-speech .diagram-note{font-size:14px}

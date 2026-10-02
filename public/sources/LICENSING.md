@@ -14,6 +14,7 @@ The current original website code, content and following SVKO sources are suppli
 - `SVKO TradingView AI.user.js`
 - `SVKO TradingView Links.user.js`
 - `SVKO TradingView Watchlist.user.js`
+- `SVKO TradingView Alert Speech.user.js`
 
 Individuals may download, install, run, study and modify the tools free of charge for personal use, expressly including trading real money for their own profit. Company and employment use requires a separate paid commercial agreement, including internal use, integration, white-labelling, hosting, bundling and distribution free of charge to customers. Running on the customer's computer does not create a business-use exception.
 
