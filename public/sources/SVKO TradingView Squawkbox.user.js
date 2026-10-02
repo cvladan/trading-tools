@@ -30,19 +30,19 @@
    * Bundled tiks toggle generators and dependencies.
    * Source: https://github.com/rexa-developer/tiks/tree/806cab3e06143d44545b6e8c49dfd94391277100
    * MIT License
-   * 
+   *
    * Copyright (c) 2026 Rexa
-   * 
+   *
    * Permission is hereby granted, free of charge, to any person obtaining a copy
    * of this software and associated documentation files (the "Software"), to deal
    * in the Software without restriction, including without limitation the rights
    * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
    * copies of the Software, and to permit persons to whom the Software is
    * furnished to do so, subject to the following conditions:
-   * 
+   *
    * The above copyright notice and this permission notice shall be included in all
    * copies or substantial portions of the Software.
-   * 
+   *
    * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
    * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
    * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -69,7 +69,7 @@
       return to;
     };
     var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-  
+
     // ../../../../private/tmp/svko-squawkbox-build/tiks/entry.ts
     var entry_exports = {};
     __export(entry_exports, {
@@ -77,7 +77,7 @@
       toggleOff: () => toggleOff,
       toggleOn: () => toggleOn
     });
-  
+
     // ../../../../private/tmp/svko-squawkbox-build/tiks/src/noise.ts
     var whiteBuffer = null;
     var pinkBuffer = null;
@@ -122,7 +122,7 @@
       pinkBuffer = buffer;
       return buffer;
     }
-  
+
     // ../../../../private/tmp/svko-squawkbox-build/tiks/src/generators/_util.ts
     var SCHEDULE_OFFSET = 5e-3;
     function startTime(ctx) {
@@ -134,7 +134,7 @@
       source.loop = true;
       return source;
     }
-  
+
     // ../../../../private/tmp/svko-squawkbox-build/tiks/src/generators/toggle.ts
     var makeToggle = (startRatio, endRatio) => (ctx, dest, theme) => {
       const now = startTime(ctx);
@@ -163,7 +163,7 @@
     };
     var toggleOn = makeToggle(0.8, 1.2);
     var toggleOff = makeToggle(1, 0.6);
-  
+
     // ../../../../private/tmp/svko-squawkbox-build/tiks/src/themes.ts
     var SOFT_THEME = {
       name: "soft",
