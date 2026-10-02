@@ -96,4 +96,4 @@
 @media(max-width:560px){.footer-main{gap:24px 20px;padding-block:28px 24px}.footer-identity,.footer-licence{grid-column:1/-1}.footer-source{margin-top:16px}.footer-links h2{min-height:36px;margin-bottom:4px}.footer-links a{font-size:13px}.footer-bottom{padding-block:16px 20px}}
 
 /* Keep the alert flows readable in both catalogue and full page diagrams. */
-:is(.visual-alert-speech,.visual-custom-sounds) .diagram-node b{font-size:14px}:is(.visual-alert-speech,.visual-custom-sounds) .diagram-node span{font-size:12px}:is(.visual-alert-speech,.visual-custom-sounds) .diagram-note{font-size:14px}
+:is(.visual-alert-speech,.visual-custom-sounds,.visual-squawkbox) .diagram-node b{font-size:14px}:is(.visual-alert-speech,.visual-custom-sounds,.visual-squawkbox) .diagram-node span{font-size:12px}:is(.visual-alert-speech,.visual-custom-sounds,.visual-squawkbox) .diagram-note{font-size:14px}

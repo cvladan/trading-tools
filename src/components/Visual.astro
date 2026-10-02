@@ -46,6 +46,17 @@ const suffix = Math.random().toString(36).slice(2, 8);
     <div class="diagram-node accent-node"><b>Play messages in order</b><span>“NVDA crossed the level.”</span></div>
     <p class="diagram-note diagram-detail">Recordings stay in Tampermonkey storage. New generation may incur API charges. This diagram does not generate or play audio.</p>
   </div>}
+  {kind==='squawkbox'&&<div class="explanation">
+    <div class="diagram-node"><span>Click Start on your selected chart</span><b>Keep listening to that chart and symbol</b></div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="diagram-node"><b>Compare the last quoted price</b><span>Example: 0.1 price step × 5 ticks = 0.5 points</span></div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="diagram-branches">
+      <div class="diagram-node accent-node"><span>Threshold reached</span><b>Play a short up or down sound</b><span>Use that price as the new reference</span></div>
+      <div class="diagram-node"><span>Below the threshold</span><b>Remain silent</b><span>Keep the previous reference</span></div>
+    </div>
+    <p class="diagram-note diagram-detail">At most one market sound per 120 milliseconds. This diagram does not play audio.</p>
+  </div>}
   {kind==='custom-sounds'&&<div class="explanation">
     <div class="diagram-node"><span>New TradingView alert · example message</span><b>NVDA crossed the level. [sound:soft-bell]</b></div>
     <div class="flow-arrow" aria-hidden="true">↓</div>
