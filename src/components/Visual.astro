@@ -46,6 +46,17 @@ const suffix = Math.random().toString(36).slice(2, 8);
     <div class="diagram-node accent-node"><b>Play messages in order</b><span>“NVDA crossed the level.”</span></div>
     <p class="diagram-note diagram-detail">Recordings stay in Tampermonkey storage. New generation may incur API charges. This diagram does not generate or play audio.</p>
   </div>}
+  {kind==='custom-sounds'&&<div class="explanation">
+    <div class="diagram-node"><span>New TradingView alert · example message</span><b>NVDA crossed the level. [sound:soft-bell]</b></div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="diagram-node"><b>Find soft-bell in your local library</b><span>Recordings imported into Tampermonkey storage</span></div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="diagram-branches">
+      <div class="diagram-node accent-node"><span>Recording found</span><b>Play the selected sound</b><span>Once per event · sounds may overlap</span></div>
+      <div class="diagram-node"><span>Recording missing</span><b>Show an error</b><span>No replacement sound</span></div>
+    </div>
+    <p class="diagram-note diagram-detail">Import a recording, select it in Notifications, apply the changes and save the alert. This diagram does not play audio.</p>
+  </div>}
   {kind==='links'&&<div class="links-demo"><div class="mini-label">RECOGNISED CANVAS TEXT</div><div class="ticker-cloud"><span class="selected-ticker">NASDAQ:NVDA <i aria-hidden="true">↗</i></span></div><p class="diagram-note">Hover to see the outline</p><div class="flow-arrow" aria-hidden="true">↓</div><div class="diagram-branches"><div class="diagram-node"><span>Click</span><b>Current chart</b></div><div class="diagram-node"><span>Ctrl or Command + click</span><b>New tab</b></div></div><p class="diagram-note diagram-detail">Open the chart from a recognised ticker drawn on a canvas. Supported prefixes only. Link opening can be configured.</p></div>}
   {kind==='statistics'&&<div class="explanation"><div class="mini-label">SIGNED IN TO TRADE NATION</div><div class="info-groups"><span>CFD · USD account</span><span>Spread · USD account</span></div><div class="flow-arrow">↓ <small>Pull history</small></div><div class="diagram-node accent-node"><b>Archive in this browser profile</b></div><div class="flow-arrow" aria-hidden="true">↓</div><div class="diagram-node"><b>Review overview, calendar and transactions</b></div><div class="diagram-detail"><div class="diagram-branches"><div class="diagram-node"><span>Archive + broker export</span><b>Compare records and fields</b><span>Review coverage and differences</span></div><div class="diagram-node"><span>From the archive</span><b>JSON backup</b></div></div><p class="diagram-note">Collect at the broker. Review the saved archive on another HTTPS page. No automatic background collection or cloud sync.</p><div class="formula-strip"><code>Closed P/L + booked adjustments = total return</code></div><p class="diagram-note">USD cash result. Deposits and withdrawals excluded.</p></div></div>}
 

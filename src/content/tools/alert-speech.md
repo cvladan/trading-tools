@@ -19,7 +19,7 @@
     "Use Test speech to check the current settings, then choose Save to keep them. Testing alone does not save settings.",
     "If playback is blocked, click Enable audio in the chart's speech panel. Trigger a new alert to check the complete flow."
   ],
-  "related": ["tradingview-ai", "tab-titles"]
+  "related": ["custom-sounds", "tradingview-ai", "tab-titles"]
 }
 ---
 
@@ -72,3 +72,7 @@ Use the TradingView website in a desktop browser with Tampermonkey. Development 
 Without a saved API key, alerts are detected but are not queued for later speech. A storage, API, decoding or playback error pauses speech and clears waiting alerts while detection continues. There are no automatic retries or fallback voices. Correct the problem, then reload the chart or save settings again. Previous alerts will not be replayed.
 
 Only one recording is generated and played at a time. A queue of more than 100 waiting alerts pauses speech and clears that queue. Detection relies on TradingView's page structure: recreating an old notification can count it again, and replacing the entire alert container can require a reload. The script does not create or change your TradingView alert rules.
+
+### Using it with Custom Sounds
+
+[Custom Sounds](/tools/custom-sounds/) selects local audio through a `[sound:...]` tag in the alert message. Alert Speech may speak that tag literally. The two scripts run independently, so speech and custom audio can overlap.
