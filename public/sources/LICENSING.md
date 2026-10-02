@@ -16,12 +16,15 @@ The current original website code, content and following SVKO sources are suppli
 - `SVKO TradingView Watchlist.user.js`
 - `SVKO TradingView Alert Speech.user.js`
 - `SVKO TradingView Alerts Custom Sounds.user.js`
+- `SVKO TradingView Squawkbox.user.js`
 
 Individuals may download, install, run, study and modify the tools free of charge for personal use, expressly including trading real money for their own profit. Company and employment use requires a separate paid commercial agreement, including internal use, integration, white-labelling, hosting, bundling and distribution free of charge to customers. Running on the customer's computer does not create a business-use exception.
 
 See [the licensing guide and commercial contact](https://trading.cvladan.com/licensing/). “Open source + commercial licence” describes public access to the code and this personal/business split. Because it restricts business use, this is a source-available licence, not an OSI open-source licence.
 
 ## External components and acknowledgements
+
+Squawkbox bundles selected tiks sound generators, copyright 2026 Rexa, under MIT. The complete MIT notice is retained in the source. See the [pinned upstream source](https://github.com/rexa-developer/tiks/tree/806cab3e06143d44545b6e8c49dfd94391277100).
 
 Another author's TradingView watchlist script inspired the idea for SVKO TradingView Watchlist. The SVKO implementation was written independently.
 

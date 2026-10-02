@@ -14,12 +14,17 @@
   "capture": "Explain a selected chart, the minimum price movement and rising or falling sound without playing audio.",
   "source": "SVKO TradingView Squawkbox.user.js",
   "licence": "SVKO 1.0",
-  "install": [],
+  "install": [
+    "Install Tampermonkey in your desktop browser and add the complete Squawkbox userscript. Keep only one copy enabled.",
+    "Reload a TradingView chart page, then choose Squawkbox from this script's Tampermonkey menu. The panel does not open automatically.",
+    "Select the chart you want to hear, click Start and check the full symbol shown in the panel.",
+    "Adjust Sound volume and Detect move (ticks). Use Test up and Test down to preview the sounds. Minimise the panel if you want to keep listening with fewer controls on screen.",
+    "Use Stop or close the panel to end playback. After a reload or a change that stops the listening session, open the panel and click Start again."
+  ],
   "related": [
     "alert-speech",
     "custom-sounds"
-  ],
-  "downloadAvailable": false
+  ]
 }
 ---
 
@@ -35,19 +40,21 @@ This is a browser userscript for the TradingView website. It runs through Tamper
 
 ### Choose the chart you want to hear
 
-The panel starts stopped. Select a chart and click **Start** to bind that listening session to its chart and full symbol. Selecting another chart does not switch the sound source, and the Details panel can remain hidden.
+Open **Squawkbox** from this script's Tampermonkey menu. New tabs and reloads do not open a panel or start audio. The panel opens centred and stopped. Select a chart and click **Start** to bind that listening session to its chart and full symbol. Selecting another chart does not switch the sound source, and the Details panel can remain hidden.
 
 Changing the selected chart's quote source or clearing its price series stops listening. Some interval changes can also stop the session. Click **Start** again to bind explicitly. Reloading the page starts stopped, and every tab needs its own **Start** click. A dedicated tab is recommended.
 
 **Test up** and **Test down** preview the two sounds. **Stop** ends listening and closes the audio context. Closing the panel also stops playback; the Tampermonkey **Squawkbox** menu command reopens it.
 
+Drag the title bar to move the panel. Minimise it to hide the settings while keeping the same chart and audio running, then restore it when you need the controls. A green upward triangle or red downward triangle beside the symbol shows the direction of the latest sound. **Stop** resets the indicator to grey. Closing either view stops playback. Reopening restores the full panel in the centre; position and minimised state are not saved.
+
 ### Choose how much movement to hear
 
-**Move (ticks)** sets the minimum net movement from the last price that produced a sound. The current default is five ticks, using the chart's price step. For example, a price step of 0.1 makes five ticks equal to 0.5 points.
+**Detect move (ticks)** sets the minimum net movement from the last price that produced a sound. The current default is five ticks, using the chart's price step. For example, a price step of 0.1 makes five ticks equal to 0.5 points.
 
 Small changes accumulate as net movement from that reference. Repeated movement back and forth does not add up as distance travelled. The script allows at most one market sound per 120 milliseconds, and a large jump produces one sound. Fast intermediate reversals may not all be heard.
 
-**Volume** starts at 15%. Only volume and the movement threshold are saved in Tampermonkey storage. Chart selection and listening state are not saved.
+**Sound volume** starts at 15%. Only volume and the movement threshold are saved in Tampermonkey storage. Chart selection and listening state are not saved.
 
 ### How it compares with PriceSquawk
 
@@ -58,6 +65,8 @@ PriceSquawk also provides [trade sounds, volume and order flow tools](https://ap
 Squawkbox generates its sounds locally without an API key or paid audio service. TradingView access and any market data charges are separate. Company and employment use requires a paid agreement under the [SVKO licence](/licensing/).
 
 ### Data and playback limits
+
+Version 0.1.1 passed syntax validation and 20 automated scenarios. Development checks in Edge also covered manual opening, dragging, minimising and restoring the panel, quote driven sounds, stopping playback and keeping the selected chart while another chart became active.
 
 The script uses TradingView's internal chart interfaces, which can change. If they are unavailable, it reports an error without switching to another data source. Delayed quotes remain delayed, and Replay is not supported. The quoted price is used even when the chart displays synthetic candles.
 
