@@ -474,6 +474,30 @@ latestExtendedHoursPrices() =>
 latestMappedPrice() =>
     request.security("", "1", [close, str.tostring(close, format.mintick)], ignore_invalid_symbol = true, calc_bars_count = 1)
 
+latestValuationPrice() =>
+    request.security("", "1", [close, syminfo.currency], ignore_invalid_symbol = true, calc_bars_count = 1)
+
+valuationEarningsHistory(string financialSymbol, string financialCurrency) =>
+    float reportedEps = request.financial(financialSymbol, "EARNINGS_PER_SHARE", "TTM", gaps = barmerge.gaps_on, ignore_invalid_symbol = true, currency = financialCurrency)
+    var array<float> reportedValues = array.new_float()
+    if not na(reportedEps)
+        array.unshift(reportedValues, reportedEps)
+        if array.size(reportedValues) > 5
+            array.pop(reportedValues)
+    float currentEps = array.size(reportedValues) > 0 ? array.get(reportedValues, 0) : na
+    float previousYearEps = array.size(reportedValues) > 4 ? array.get(reportedValues, 4) : na
+    [currentEps, previousYearEps]
+
+valuationData(string financialSymbol, string financialCurrency) =>
+    // Daily report events preserve the four quarterly TTM observations needed for annual growth.
+    [epsTtm, previousYearEps] = request.security(financialSymbol, "D", valuationEarningsHistory(financialSymbol, financialCurrency), gaps = barmerge.gaps_off, lookahead = barmerge.lookahead_on, ignore_invalid_symbol = true, calc_bars_count = 600)
+    float epsForward = request.financial(financialSymbol, "EPS_ESTIMATE", "NTM", gaps = barmerge.gaps_off, ignore_invalid_symbol = true, currency = financialCurrency)
+    [epsTtm, epsForward, previousYearEps]
+
+pegValue(float valuationPrice, float epsTtm, float previousYearEps) =>
+    float annualGrowthPercent = previousYearEps != 0 ? (epsTtm - previousYearEps) / math.abs(previousYearEps) * 100 : na
+    epsTtm != 0 and valuationPrice > 0 and annualGrowthPercent > 0 ? valuationPrice / epsTtm / annualGrowthPercent : na
+
 var array<string> performancePlaceholders = array.new_string()
 var array<int> performanceStates = array.new_int()
 var bool performanceFormatParsed = false
@@ -561,10 +585,21 @@ int pastEarningsTime = na
 string earningsTimezone = "UTC"
 float forwardPeRatio = na
 float peRatio = na
+float pegRatio = na
+string valuationTooltip = ""
 string allTimeHighText = "N/A"
 
+if showPeRatios and hasCalculationSymbol and (barstate.islastconfirmedhistory or barstate.islast)
+    string valuationTicker = ticker.modify(calculationSymbol, session = session.extended)
+    [valuationPrice, valuationCurrency] = request.security(valuationTicker, "12M", latestValuationPrice(), gaps = barmerge.gaps_off, lookahead = barmerge.lookahead_on, ignore_invalid_symbol = true, calc_bars_count = 1)
+    [epsTtm, epsForward, previousYearEps] = valuationData(calculationSymbol, valuationCurrency)
+    peRatio := epsTtm > 0 and valuationPrice > 0 ? valuationPrice / epsTtm : na
+    forwardPeRatio := epsForward > 0 and valuationPrice > 0 ? valuationPrice / epsForward : na
+    pegRatio := pegValue(valuationPrice, epsTtm, previousYearEps)
+    valuationTooltip := "Source: " + calculationSymbol + "\nLatest price, including extended hours: " + (na(valuationPrice) ? "N/A" : str.tostring(valuationPrice, "#.######")) + " " + valuationCurrency + "\nEPS TTM: " + (na(epsTtm) ? "N/A" : str.tostring(epsTtm, "#.######")) + "\nEstimated EPS, next twelve months: " + (na(epsForward) ? "N/A" : str.tostring(epsForward, "#.######")) + "\nEPS TTM one year earlier: " + (na(previousYearEps) ? "N/A" : str.tostring(previousYearEps, "#.######")) + "\nPEG: P/E divided by positive annual EPS growth (%)" + "\nUpdates when the chart receives new data."
+
 if barstate.islast and hasCalculationSymbol and hasEnabledMetric
-    if showExtendedHours or showPeRatios or showAllTimeHigh or hasValidPerformanceToken
+    if showExtendedHours or showAllTimeHigh or hasValidPerformanceToken
         if showAllTimeHigh or hasValidPerformanceToken
             if not na(requestedAllTimeHigh) and not na(requestedAllTimeHighTime) and not na(calculationClose) and requestedAllTimeHigh != 0 and calculationClose != 0
                 int allTimeHighDays = math.max(0, int(math.floor((float(timenow) - float(requestedAllTimeHighTime)) / 86400000.0)))
@@ -665,10 +700,6 @@ if barstate.islast and hasCalculationSymbol and hasEnabledMetric
         extendedPostmarketChange := na(activePostmarketClose) or na(extendedBaselinePrice) or extendedBaselinePrice == 0 ? na : (activePostmarketClose / extendedBaselinePrice - 1) * 100
         extendedPremarketChange := na(activePremarketClose) or na(extendedBaselinePrice) or extendedBaselinePrice == 0 ? na : na(activePostmarketClose) or activePostmarketClose == 0 ? (activePremarketClose / extendedBaselinePrice - 1) * 100 : (activePremarketClose / activePostmarketClose - 1) * 100
         extendedHoursChange := na(activeExtendedPrice) or na(extendedBaselinePrice) or extendedBaselinePrice == 0 ? na : (activeExtendedPrice / extendedBaselinePrice - 1) * 100
-    if showPeRatios
-        float epsTtm = request.financial(calculationSymbol, "EARNINGS_PER_SHARE", "TTM", ignore_invalid_symbol = true)
-        forwardPeRatio := request.financial(calculationSymbol, "PRICE_EARNINGS_FORWARD", "FY", ignore_invalid_symbol = true)
-        peRatio := epsTtm == 0 ? na : calculationClose / epsTtm
     if showAnalystAverageTarget
         [requestedAnalystAverageTarget, requestedAnalystCurrentPrice] = request.security(calculationSymbol, timeframe.period, [syminfo.target_price_average, close], ignore_invalid_symbol = true, calc_bars_count = 1)
         analystAverageTarget := requestedAnalystAverageTarget
@@ -706,10 +737,18 @@ bool showRenderedPerformanceRow = showPerformanceRow and str.length(str.trim(per
 var line mappedPriceLine = na
 var box mappedPriceTextBox = na
 var table infoTable = na
+var int tablePeRow = na
 
 if barstate.islast and hasCalculationSymbol
-    if na(infoTable)
-        infoTable := table.new(position.bottom_right, 2, 10, bgcolor = na, frame_color = color.white, frame_width = tableFrameWidth, border_width = 0)
+    int peRow = 1 + (companyNameMaxCharacters > 0 ? 1 : 0) + (hasMappedSymbol ? 1 : 0) + (showRenderedPerformanceRow ? 1 : 0) + (showExtendedHours ? 1 : 0) + (showAllTimeHigh ? 1 : 0) + (showAtrPercent ? 1 : 0) + (showEarningsRow ? 1 : 0) + (showAnalystAverageTarget ? 1 : 0)
+    if na(infoTable) or tablePeRow != peRow
+        if not na(infoTable)
+            table.delete(infoTable)
+        infoTable := table.new(position.bottom_right, 4, 10, bgcolor = na, frame_color = color.white, frame_width = tableFrameWidth, border_width = 0)
+        for mergeRow = 0 to 9
+            if not showPeRatios or mergeRow != peRow
+                table.merge_cells(infoTable, 1, mergeRow, 3, mergeRow)
+        tablePeRow := peRow
     bool showMappedPriceLine = isBrokerChart and mappedPriceLineLength > 0 and mappedPriceMarketStateAllowsDisplay and not na(mappedCurrentPrice)
     if showMappedPriceLine
         int mappedPriceLineStart = bar_index + mappedPriceDistanceFromCandle
@@ -781,7 +820,9 @@ if barstate.islast and hasCalculationSymbol
         row += 1
     if hasCalculationSymbol and showPeRatios
         table.cell(infoTable, 0, row, "P/E", height = tableRowHeightPercent, bgcolor = liveTableBackgroundColour, text_color = color.white, text_halign = text.align_left, text_size = tableFontSize, text_font_family = tableFontFamily)
-        table.cell(infoTable, 1, row, formatNumber(peRatio) + " / Fwd " + formatNumber(forwardPeRatio), height = tableRowHeightPercent, bgcolor = liveTableBackgroundColour, text_color = color.white, text_halign = text.align_left, text_size = tableFontSize, text_font_family = tableFontFamily)
+        table.cell(infoTable, 1, row, formatNumber(peRatio) + " / Fwd " + formatNumber(forwardPeRatio), height = tableRowHeightPercent, bgcolor = liveTableBackgroundColour, text_color = color.white, text_halign = text.align_left, text_size = tableFontSize, text_font_family = tableFontFamily, tooltip = valuationTooltip)
+        table.cell(infoTable, 2, row, "/", height = tableRowHeightPercent, bgcolor = liveTableBackgroundColour, text_color = color.white, text_halign = text.align_left, text_size = tableFontSize, text_font_family = tableFontFamily)
+        table.cell(infoTable, 3, row, "PEG " + formatNumber(pegRatio), height = tableRowHeightPercent, bgcolor = liveTableBackgroundColour, text_color = pegRatio > 0 and pegRatio < 0.50 ? color.lime : color.white, text_halign = text.align_left, text_size = tableFontSize, text_font_family = tableFontFamily, text_formatting = pegRatio > 0 and pegRatio < 0.30 ? text.format_bold : text.format_none, tooltip = valuationTooltip)
         row += 1
     while row < 10
         table.cell(infoTable, 0, row, "", height = tableRowHeightPercent, bgcolor = liveTableBackgroundColour, text_color = color.white, text_halign = text.align_left, text_size = tableFontSize, text_font_family = tableFontFamily)

@@ -3,7 +3,7 @@
   "title": "Company data beside your CFD chart.",
   "name": "SVKO Info",
   "group": "indicator",
-  "summary": "See company information, earnings, analyst targets and price figures for the mapped stock symbol beside your CFD candles.",
+  "summary": "See company information, earnings, analyst targets, P/E, forward P/E, PEG and price figures for the mapped stock symbol beside your CFD candles.",
   "label": "Stock context",
   "order": 2,
   "markets": [
@@ -34,7 +34,7 @@ When I trade a stock CFD, I want the company’s earnings, valuation and stock p
 
 ## How it solves the problem
 
-The table can show the company and symbol, performance over chosen periods, extended session movement, a history high, daily ATR, earnings timing, analyst targets and P/E. Each optional row requests its data only when enabled.
+The table can show the company and symbol, performance over chosen periods, extended session movement, a history high, daily ATR, earnings timing, analyst targets, P/E, forward P/E and PEG. Each optional row requests its data only when enabled.
 
 A local mapping works without a companion indicator:
 
@@ -48,7 +48,23 @@ Local mappings take priority. If no local pair matches, Info can use both inputs
 
 Performance uses regular session daily closes. The history window defaults to 365 days; requests outside that window are omitted. The optional mapped price marker places the latest available extended session quote beside the CFD candles. Set its line length to zero to disable it.
 
-Earnings, analyst targets and P/E depend on the listing and available coverage. They are especially useful for stocks, and are not promised for indices. Missing values can appear as `N/A`.
+Earnings, analyst targets and valuation ratios depend on the listing and available coverage. They are especially useful for stocks, and are not promised for indices. Missing values can appear as `N/A`.
+
+### P/E, forward P/E and PEG
+
+Enable **Show P/E ratios** to display all three values in one row. For example: `P/E 21.89 / Fwd 28.8 / PEG 0.28`. These are illustrative values.
+
+P/E and forward P/E use the latest available price of the native stock, including premarket and postmarket. P/E divides that price by trailing twelve month earnings per share. Forward P/E uses estimated earnings per share for the next twelve months. Regular and extended TRADENATION tickers both use the mapped stock price and its earnings.
+
+PEG follows TradingView's **Price/earnings to growth ratio**: trailing P/E divided by positive annual percentage growth in trailing twelve month earnings. It changes with the native stock price. Only the PEG text receives the extra emphasis:
+
+| PEG value | Appearance |
+| --- | --- |
+| Above zero and below 0.30 | Green and bold |
+| From 0.30 to below 0.50 | Green |
+| 0.50 or above, zero, negative or unavailable | Normal text |
+
+Thresholds apply before rounding. PEG displays `N/A` when annual earnings growth is zero or negative, or the required earnings history is unavailable. Other available ratios remain visible. Hover the row to inspect the native price and earnings used in the calculation.
 
 ### What can change
 
